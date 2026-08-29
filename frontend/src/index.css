@@ -1,0 +1,244 @@
+:root {
+  /* KhanaHub Unified Design System Tokens - Premium Food Style */
+  --primary-brand: #fc8019; /* Swiggy-like vibrant orange */
+  --primary-brand-dark: #e56d10;
+  --primary-brand-glow: #fff1e5;
+  --primary-brand-border: #fdbb85;
+
+  --primary-green: #16a34a; /* Keep green for success/veg indicators */
+  --primary-green-dark: #15803d;
+  --primary-green-glow: #dcfce7;
+  --primary-green-border: #86efac;
+
+  --accent-orange: var(--primary-brand);
+  --accent-orange-hover: var(--primary-brand-dark);
+  --accent-orange-light: var(--primary-brand-glow);
+  --accent-orange-border: var(--primary-brand-border);
+
+  --info-blue: #0284c7;
+  --info-blue-dark: #0369a1;
+  --info-blue-light: #f0f9ff;
+  --info-blue-border: #bae6fd;
+
+  --text-dark: #1c1c1c; /* Softer black */
+  --text-body: #3d4152; /* Swiggy-like text body */
+  --text-muted: #686b78;
+  --text-light: #93959f;
+  --text-white: #ffffff;
+
+  --bg-body: #f8f9fa;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f0f0f5;
+  --bg-dark: #1c1c1c;
+
+  --border-light: #e9e9eb;
+  --border-subtle: #d4d5d9;
+
+  --shadow-xs: 0 2px 4px rgba(28, 28, 28, 0.04);
+  --shadow-sm: 0 4px 8px rgba(28, 28, 28, 0.06);
+  --shadow-md: 0 8px 16px rgba(28, 28, 28, 0.08);
+  --shadow-lg: 0 16px 32px rgba(28, 28, 28, 0.1);
+  --shadow-glow-brand: 0 8px 24px rgba(252, 128, 25, 0.25);
+
+  --radius-xs: 6px;
+  --radius-sm: 10px;
+  --radius-md: 16px;
+  --radius-lg: 24px;
+  --radius-xl: 32px;
+  --radius-full: 9999px;
+
+  /* Premium Spring Animation Easing */
+  --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.15);
+  --ease-smooth: cubic-bezier(0.25, 1, 0.5, 1);
+  --ease-standard: var(--ease-smooth);
+  
+  --transition-fast: transform 0.2s var(--ease-smooth), opacity 0.2s var(--ease-smooth);
+  --transition-base: transform 0.3s var(--ease-smooth), opacity 0.3s var(--ease-smooth), background-color 0.3s var(--ease-smooth), border-color 0.3s var(--ease-smooth);
+  --transition-modal: transform 0.4s var(--ease-spring), opacity 0.3s var(--ease-smooth);
+  
+  /* Legacy token compatibility */
+  --primary: var(--primary-brand);
+  --primary-dark: var(--primary-brand-dark);
+  --bg-light: var(--bg-body);
+  --bg-white: var(--bg-surface);
+  --transition: all 0.3s var(--ease-smooth);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  font-family: 'Outfit', 'Plus Jakarta Sans', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  color: var(--text-body);
+  background-color: var(--bg-body);
+  line-height: 1.55;
+  overflow-x: hidden;
+  width: 100%;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: smooth;
+}
+
+/* Premium Animations */
+@keyframes fadeUpReveal {
+  0% {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pulseGlow {
+  0% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 8px rgba(22, 163, 74, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(22, 163, 74, 0);
+  }
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+button {
+  cursor: pointer;
+  border: none;
+  font-family: inherit;
+  user-select: none;
+}
+
+input, textarea, select {
+  font-family: inherit;
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 0 14px;
+  }
+}
+
+/* Primary Button Styling */
+.btn-primary {
+  background-color: var(--primary-brand);
+  color: var(--text-white);
+  padding: 12px 24px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 1rem;
+  transition: var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 4px 12px rgba(252, 128, 25, 0.25);
+  border: none;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: var(--primary-brand-dark);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(252, 128, 25, 0.35);
+}
+
+.btn-primary:active:not(:disabled) {
+  transform: scale(0.96);
+  transform: translateY(0);
+}
+
+.btn-primary:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-accent {
+  background-color: var(--accent-orange);
+  color: var(--text-white);
+  padding: 12px 24px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: var(--transition-base);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.2);
+}
+
+.btn-accent:hover:not(:disabled) {
+  background-color: var(--accent-orange-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+}
+
+.btn-outline {
+  background-color: transparent;
+  color: var(--primary-green);
+  border: 1.5px solid var(--primary-green);
+  padding: 10px 22px;
+  border-radius: var(--radius-md);
+  font-weight: 700;
+  font-size: 0.95rem;
+  transition: var(--transition-base);
+}
+
+.btn-outline:hover {
+  background-color: var(--primary-green-glow);
+  color: var(--primary-green-dark);
+}
+
+/* Utilities */
+.text-center { text-align: center; }
+.mt-2 { margin-top: 0.5rem; }
+.mt-4 { margin-top: 1rem; }
+.mb-2 { margin-bottom: 0.5rem; }
+.mb-4 { margin-bottom: 1rem; }
+.py-4 { padding-top: 1rem; padding-bottom: 1rem; }
+.py-8 { padding-top: 3.5rem; padding-bottom: 3.5rem; }
+
+/* Global Smooth Spinner Animations */
+.spinner {
+  animation: spin 0.75s linear infinite !important;
+  transform-origin: center center !important;
+  transform-box: fill-box !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.spinner-ios {
+  animation: ios-spin 0.75s steps(8, end) infinite !important;
+  transform-origin: center center !important;
+  transform-box: fill-box !important;
+  display: inline-block !important;
+  vertical-align: middle !important;
+  flex-shrink: 0 !important;
+}
+
+@keyframes ios-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
