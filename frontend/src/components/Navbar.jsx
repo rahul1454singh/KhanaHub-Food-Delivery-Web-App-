@@ -208,17 +208,13 @@ const Navbar = ({ view, onViewChange }) => {
               <span className="navbar-title italic-brand" style={{ display: 'flex', alignItems: 'center' }}>
                 KhanaHub 
                 {user && (
-                  <span style={{ 
+                  <span className="navbar-username" style={{ 
                     color: user.role === 'owner' ? '#16a34a' : '#64748b', 
                     fontSize: '0.6em', 
-                    marginLeft: '6px', 
+                    marginLeft: '8px', 
                     fontWeight: '800', 
                     display: 'inline-block', 
-                    transform: 'translateY(-2px)',
-                    maxWidth: '80px',
-                    whiteSpace: 'nowrap',
-                    overflow: 'hidden',
-                    textOverflow: 'ellipsis'
+                    transform: 'translateY(-2px)'
                   }}>
                     {user.role === 'owner' ? 'Owner' : getDisplayName(user)}
                   </span>
@@ -227,7 +223,7 @@ const Navbar = ({ view, onViewChange }) => {
             </a>
           </div>
           
-          <div className="navbar-right">
+          <div className="navbar-center">
             <div className="navbar-links">
               <button 
                 className={`nav-link-btn ${view === 'home' && activeSection === 'home' ? 'active' : ''}`} 
@@ -292,7 +288,9 @@ const Navbar = ({ view, onViewChange }) => {
                 </>
               )}
             </div>
+          </div>
 
+          <div className="navbar-right">
             {(!user || user.role !== 'owner') && (
               <button className="cart-btn" aria-label="View Your Cart" onClick={openCart}>
                 <ShoppingCart size={22} />

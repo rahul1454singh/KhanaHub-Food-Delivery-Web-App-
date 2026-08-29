@@ -57,11 +57,17 @@
   gap: 20px;
 }
 
+.navbar-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-grow: 1;
+}
+
 .navbar-links {
   display: flex;
   gap: 8px;
   align-items: center;
-  margin-right: 12px;
 }
 
 .nav-link-btn {
@@ -413,7 +419,7 @@
 }
 
 @media (max-width: 860px) {
-  .navbar-links {
+  .navbar-center {
     display: none;
   }
   .mobile-menu-btn {
@@ -428,6 +434,9 @@
   .navbar-left {
     gap: 8px;
   }
+  .navbar-username {
+    display: none !important;
+  }
   .navbar-title {
     font-size: 1.2rem;
   }
@@ -437,12 +446,18 @@
   .login-btn span, .logout-btn span {
     display: none;
   }
-  .login-btn, .logout-btn {
-    padding: 8px;
+  .login-btn, .logout-btn, .cart-btn {
+    padding: 0 !important;
     border-radius: 50% !important;
-    width: 40px;
-    height: 40px;
-    justify-content: center;
+    width: 44px !important;
+    height: 44px !important;
+    justify-content: center !important;
+    min-height: 44px !important;
+  }
+  .login-btn svg, .logout-btn svg, .cart-btn svg {
+    width: 22px !important;
+    height: 22px !important;
+    margin: 0 !important;
   }
 }
 
