@@ -12,7 +12,7 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 0;
-  opacity: 0.06;
+  opacity: 0.12; /* Increased visibility per user request */
   pointer-events: none;
 }
 
