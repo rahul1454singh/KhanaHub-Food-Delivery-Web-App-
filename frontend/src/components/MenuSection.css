@@ -364,8 +364,8 @@
     scroll-snap-type: x mandatory;
     gap: 16px;
     padding-bottom: 24px; /* Space for swipe interaction */
-    padding-left: 4px;
-    padding-right: 4px;
+    padding-left: 16px;
+    padding-right: 16px;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
   }
@@ -375,7 +375,7 @@
   }
 
   .menu-card {
-    min-width: 100%; /* Show exactly one card at a time */
+    min-width: calc(100% - 48px); /* Leaves 48px of space so next/prev cards prominently peek in */
     flex: 0 0 auto;
     scroll-snap-align: center;
     scroll-snap-stop: always;
