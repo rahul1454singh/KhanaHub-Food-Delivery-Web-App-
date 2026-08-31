@@ -5,9 +5,11 @@ const dns = require('dns');
 const path = require('path');
 
 // 1. Load environment variables
-require('dotenv').config({
-  path: path.join(__dirname, '../.env')
-});
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config({
+    path: path.join(__dirname, '../.env')
+  });
+}
 
 // 2. Configure required DNS
 dns.setServers(['1.1.1.1', '8.8.8.8']);
@@ -104,11 +106,11 @@ async function connectToDatabase() {
 function startServer() {
   app.listen(PORT, () => {
     console.log('\n================================');
-    console.log('🚀 KhanaHub Backend Running');
+    console.log('KhanaHub Backend Running');
     console.log('================================');
-    console.log(`📡 Server: http://localhost:${PORT}`);
-    console.log(`🔗 Health: http://localhost:${PORT}/`);
-    console.log(`🔗 API:    http://localhost:${PORT}/api/auth`);
+    console.log(`Server: http://localhost:${PORT}`);
+    console.log(`Health: http://localhost:${PORT}/`);
+    console.log(`API:    http://localhost:${PORT}/api/auth`);
     console.log('================================\n');
 
     // Initiate MongoDB connection
@@ -122,4 +124,13 @@ function startServer() {
   });
 }
 
-startServer();
+if (process.env.NODE_ENV !== 'production') {
+  startServer();
+} else {
+  // In production (Vercel), we don't listen on a port. 
+  // Vercel serverless functions handle the port binding.
+  // We just initialize the database connection and export the app.
+  connectToDatabase();
+}
+
+module.exports = app;
