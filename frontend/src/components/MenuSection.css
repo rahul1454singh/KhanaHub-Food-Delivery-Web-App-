@@ -356,27 +356,44 @@
 }
 
 @media (max-width: 600px) {
-  /* Sticky Stacking Cards for mobile */
+  /* Swipeable Carousel for mobile */
   .menu-grid {
     display: flex;
-    flex-direction: column;
-    gap: 0;
-    padding-bottom: 40px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    gap: 16px;
+    padding-bottom: 24px; /* Space for swipe interaction */
     padding-left: 12px;
     padding-right: 12px;
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    align-items: center; /* Center them vertically during scaling */
   }
   
+  .menu-grid::-webkit-scrollbar {
+    display: none; /* Hide scrollbar for cleaner look */
+  }
+
   .menu-card {
-    min-width: 100%;
+    min-width: calc(100% - 40px); /* Leave 40px so next/prev cards prominently peek in */
+    flex: 0 0 auto;
+    scroll-snap-align: center;
+    scroll-snap-stop: always;
     
-    /* Sticky Stacking Magic */
-    position: sticky;
-    top: 90px; /* Sticks just below the mobile navbar */
-    margin-bottom: 48px; /* Space to scroll before next card hits */
-    
-    /* Add a shadow at the top so it clearly overlaps the previous card */
-    box-shadow: 0 -8px 25px rgba(0, 0, 0, 0.12);
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    /* Default state for side cards */
+    transform: scale(0.9);
+    opacity: 0.6;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    will-change: transform, opacity;
+  }
+  
+  /* The centered card pops out and is fully visible */
+  .menu-card.center-pop {
+    transform: scale(1) !important;
+    opacity: 1 !important;
+    z-index: 5;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   }
   
   .card-image-container {
