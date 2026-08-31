@@ -364,13 +364,11 @@
     scroll-snap-type: x mandatory;
     gap: 16px;
     padding-bottom: 24px; /* Space for swipe interaction */
-    padding-left: 16px;
-    padding-right: 16px;
+    padding-left: 12px;
+    padding-right: 12px;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
-    /* Create a faded edge effect for the peeking side cards */
-    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
-    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    align-items: center; /* Center them vertically during scaling */
   }
   
   .menu-grid::-webkit-scrollbar {
@@ -378,10 +376,24 @@
   }
 
   .menu-card {
-    min-width: calc(100% - 24px); /* Leaves a smaller 24px space so next/prev cards have a subtle peek */
+    min-width: calc(100% - 40px); /* Leave 40px so next/prev cards prominently peek in */
     flex: 0 0 auto;
     scroll-snap-align: center;
     scroll-snap-stop: always;
+    
+    /* Default state for side cards */
+    transform: scale(0.85);
+    opacity: 0.5;
+    transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275), opacity 0.4s ease;
+    will-change: transform, opacity;
+  }
+  
+  /* The centered card pops out and is fully visible */
+  .menu-card.center-pop {
+    transform: scale(1) !important;
+    opacity: 1 !important;
+    z-index: 5;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
   }
   
   .card-image-container {

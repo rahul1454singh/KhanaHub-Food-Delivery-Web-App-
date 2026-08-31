@@ -168,6 +168,36 @@ const MenuSection = () => {
     setCurrentPage(1);
   }, [activeCategory, dietaryFilter]);
 
+  // Mobile Carousel Intersection Observer for "Pop" effect
+  React.useEffect(() => {
+    if (window.innerWidth > 600) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('center-pop');
+        } else {
+          entry.target.classList.remove('center-pop');
+        }
+      });
+    }, {
+      root: null,
+      rootMargin: '0px -40% 0px -40%', // Triggers when card is in the middle 20% of the viewport horizontally
+      threshold: 0
+    });
+
+    // Small delay to ensure cards are rendered in DOM
+    const timeoutId = setTimeout(() => {
+      const cards = document.querySelectorAll('.menu-card');
+      cards.forEach(card => observer.observe(card));
+    }, 100);
+
+    return () => {
+      clearTimeout(timeoutId);
+      observer.disconnect();
+    };
+  }, [menuItems, activeCategory, dietaryFilter, currentPage]);
+
   // Pagination logic
   const totalPages = Math.ceil(filteredMenu.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
