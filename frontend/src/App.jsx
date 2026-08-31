@@ -198,18 +198,25 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Show beautiful branded loading screen during initial auth restoration or global loading
-  if (authLoading) {
-    return <LoadingScreen message="Initializing KhanaHub..." />;
-  }
+  const [initialSplash, setInitialSplash] = useState(true);
 
-  if (globalLoading?.isLoading) {
-    return <LoadingScreen message={globalLoading.message} />;
-  }
+  useEffect(() => {
+    // Hide splash screen after 3.5 seconds to allow background assets to load
+    const timer = setTimeout(() => {
+      setInitialSplash(false);
+    }, 3500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const showLoadingOverlay = initialSplash || authLoading || globalLoading?.isLoading || isScreenLoading;
+  let loadingMessage = "Preparing delicious food...";
+  if (globalLoading?.isLoading) loadingMessage = globalLoading.message;
+  else if (authLoading) loadingMessage = "Initializing KhanaHub...";
+  else if (isScreenLoading) loadingMessage = "Loading...";
 
   return (
     <div className="app">
-      {isScreenLoading && <LoadingScreen message="Loading..." />}
+      {showLoadingOverlay && <LoadingScreen message={loadingMessage} />}
       <Navbar view={view} onViewChange={handleViewChange} />
       <CartSidebar onCheckout={handleCheckoutClick} />
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
