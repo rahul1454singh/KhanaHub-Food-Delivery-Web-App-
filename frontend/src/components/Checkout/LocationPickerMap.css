@@ -27,7 +27,7 @@
   font-weight: 600;
   pointer-events: none;
   z-index: 1000;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(12px);
   white-space: nowrap;
 }
 
