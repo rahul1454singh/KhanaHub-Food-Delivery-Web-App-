@@ -242,21 +242,25 @@
 .mobile-left-drawer {
   position: fixed;
   top: 0;
-  left: -320px;
+  left: 0;
   width: 300px;
   max-width: 85vw;
   height: 100vh;
   background-color: #ffffff;
   box-shadow: 10px 0 30px rgba(0, 0, 0, 0.15);
   z-index: 1999;
-  transition: left 0.3s var(--ease-standard);
   display: flex;
   flex-direction: column;
   padding: 24px 20px;
+  
+  /* Hardware accelerated buttery smooth animation */
+  transform: translate3d(-100%, 0, 0);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .mobile-left-drawer.open {
-  left: 0;
+  transform: translate3d(0, 0, 0);
 }
 
 .mobile-drawer-header {
