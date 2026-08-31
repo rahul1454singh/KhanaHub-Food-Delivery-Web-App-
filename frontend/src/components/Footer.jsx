@@ -6,7 +6,7 @@ const Footer = () => {
   return (
     <footer className="footer">
       <div className="footer-bg-watermark">
-        <img src="https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png" alt="KhanaHub Background Logo" />
+        <img src="/logo/newlogo.png" alt="KhanaHub Background Logo" />
       </div>
       <div className="container footer-container new-layout">
         

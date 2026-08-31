@@ -135,20 +135,34 @@ const ViewMenu = () => {
   const uploadEditImage = async () => {
     if (!editImageFile) return null;
     setUploading(true);
-    const toastId = toast.loading('Uploading new image...');
+    const toastId = toast.loading('Uploading new image to Cloudinary...');
     
     try {
-      const fileExt = editImageFile.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const { error } = await supabase.storage.from('menu-images').upload(fileName, editImageFile);
-      if (error) throw error;
+      const formData = new FormData();
+      formData.append('file', editImageFile);
+      
+      // Loaded from .env with fallback to actual names just in case
+      const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'khanahub_preset'; 
+      const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'n3wagpa9';
 
-      const { data } = supabase.storage.from('menu-images').getPublicUrl(fileName);
-      toast.success('Image uploaded successfully', { id: toastId });
-      return data.publicUrl;
+      // Use Cloudinary Unsigned Upload API
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error?.message || 'Cloudinary upload failed');
+      }
+
+      toast.success('Image uploaded successfully to Cloudinary', { id: toastId });
+      // return the URL of the uploaded image
+      return data.secure_url;
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error('Upload failed', { id: toastId });
+      toast.error('Error uploading image to Cloudinary. Check your Cloud Name / Preset.', { id: toastId });
       return null;
     } finally {
       setUploading(false);
@@ -229,7 +243,7 @@ const ViewMenu = () => {
               src={item.image.startsWith('http') ? item.image : item.image} 
               alt={item.name} 
               className="admin-card-img"
-              onError={(e) => { e.target.src = 'https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png'; }}
+              onError={(e) => { e.target.src = '/logo/newlogo.png'; }}
             />
             
             <div className="admin-card-content">

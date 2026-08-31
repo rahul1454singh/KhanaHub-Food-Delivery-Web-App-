@@ -169,7 +169,7 @@ const CheckoutPage = ({ onBack, onPaymentSuccess, onViewChange }) => {
       if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
         try {
           // Fetch local image and convert to Base64 Data URI
-          const logoRes = await fetch('https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png');
+          const logoRes = await fetch('/logo/newlogo.png');
           if (logoRes.ok) {
             const logoBlob = await logoRes.blob();
             finalLogoImage = await new Promise((resolve) => {
@@ -183,7 +183,7 @@ const CheckoutPage = ({ onBack, onPaymentSuccess, onViewChange }) => {
         }
       } else {
         // In production, an absolute HTTPS URL is perfectly safe
-        finalLogoImage = window.location.origin + 'https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png';
+        finalLogoImage = window.location.origin + '/logo/newlogo.png';
       }
 
       // 3. Initialize official Razorpay Checkout

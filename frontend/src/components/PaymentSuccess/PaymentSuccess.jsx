@@ -106,7 +106,7 @@ const PaymentSuccess = ({ order, onViewChange }) => {
           <div className="ebill-header">
             <div className="ebill-brand-section">
               <div className="ebill-logo-row">
-                <img src="https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png" alt="KhanaHub" className="ebill-logo" />
+                <img src="/logo/newlogo.png" alt="KhanaHub" className="ebill-logo" />
                 <span className="ebill-brand-name italic-brand">KhanaHub</span>
               </div>
               <span className="ebill-tagline">Authentic Food & Fast Delivery</span>
