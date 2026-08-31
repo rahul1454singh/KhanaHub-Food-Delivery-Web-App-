@@ -118,7 +118,7 @@ const OwnerOrderHistory = () => {
   if (loading) {
     return (
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', minHeight: '50vh', gap: '12px' }}>
-        <IOSSpinner size={36} color="#ea580c" />
+        <IOSSpinner size={36} color="#2E7D32" />
         <p style={{ color: '#64748b', fontWeight: '600' }}>Loading completed order records...</p>
       </div>
     );
@@ -181,13 +181,13 @@ const OwnerOrderHistory = () => {
 
                   <div style={{ fontSize: '0.88rem', color: '#475569', display: 'flex', flexDirection: 'column', gap: '6px', marginBottom: '14px' }}>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <User size={15} color="#ea580c" /> <strong>{details.name || 'Customer'}</strong>
+                      <User size={15} color="#2E7D32" /> <strong>{details.name || 'Customer'}</strong>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <Phone size={15} color="#ea580c" /> <span>{details.phoneNumber || 'N/A'}</span>
+                      <Phone size={15} color="#2E7D32" /> <span>{details.phoneNumber || 'N/A'}</span>
                     </div>
                     <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
-                      <MapPin size={15} color="#ea580c" /> <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{details.address || 'N/A'}</span>
+                      <MapPin size={15} color="#2E7D32" /> <span style={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap' }}>{details.address || 'N/A'}</span>
                     </div>
                     
                     {/* Delivery Partner details */}
@@ -350,7 +350,7 @@ const OwnerOrderHistory = () => {
                 {(selectedOrder.items || []).map((item, idx) => (
                   <li key={idx} style={{ padding: '0.75rem 1rem', borderBottom: idx !== selectedOrder.items.length - 1 ? '1px solid #e2e8f0' : 'none', display: 'flex', justifyContent: 'space-between' }}>
                     <span>
-                      <strong style={{ color: '#ea580c', marginRight: '6px' }}>{item.quantity}x</strong> 
+                      <strong style={{ color: '#2E7D32', marginRight: '6px' }}>{item.quantity}x</strong> 
                       {item.name} {item.variant ? `(${item.variant})` : ''}
                     </span>
                     <span style={{ fontWeight: '600' }}>{formatCurrency((item.price || 0) * item.quantity)}</span>

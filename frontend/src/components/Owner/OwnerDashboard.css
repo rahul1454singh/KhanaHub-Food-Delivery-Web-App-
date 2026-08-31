@@ -1,7 +1,7 @@
 .owner-dashboard-container {
   display: flex;
   height: calc(100vh - 70px);
-  background-color: #f8fafc;
+  background-color: var(--bg-body);
   font-family: inherit;
 }
 
@@ -318,7 +318,7 @@
   transition: background 0.2s;
 }
 .btn-add-menu:hover {
-  background: #ea580c;
+  background: #2E7D32;
 }
 .btn-add-menu:disabled {
   background: #fdba74;

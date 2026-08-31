@@ -328,7 +328,7 @@ function App() {
             <p style={{ color: '#64748b', marginBottom: '40px' }}>The page you are looking for does not exist or has been moved.</p>
             <button 
               onClick={() => handleViewChange('home')}
-              style={{ padding: '12px 24px', backgroundColor: '#f97316', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
+              style={{ padding: '12px 24px', backgroundColor: 'var(--primary-brand)', color: 'white', border: 'none', borderRadius: '8px', cursor: 'pointer', fontWeight: 'bold' }}
             >
               Return to Home
             </button>

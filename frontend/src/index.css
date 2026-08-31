@@ -1,44 +1,50 @@
 :root {
-  /* KhanaHub Unified Design System Tokens - Premium Food Style */
-  --primary-brand: #fc8019; /* Swiggy-like vibrant orange */
-  --primary-brand-dark: #e56d10;
-  --primary-brand-glow: #fff1e5;
-  --primary-brand-border: #fdbb85;
+  /* KhanaHub Unified Design System Tokens - Premium Burgundy Theme */
+  --primary-brand: #2E7D32; /* Deep Burgundy */
+  --primary-brand-dark: #1B5E20;
+  --primary-brand-glow: #E8F5E9;
+  --primary-brand-light: #E8F5E9;
+  --primary-brand-border: #C9A227; /* Soft Gold Accent */
 
-  --primary-green: #16a34a; /* Keep green for success/veg indicators */
-  --primary-green-dark: #15803d;
-  --primary-green-glow: #dcfce7;
-  --primary-green-border: #86efac;
+  --primary-green: #2E7D32; 
+  --primary-green-dark: #1b5e20;
+  --primary-green-glow: #e8f5e9;
+  --primary-green-border: #81c784;
 
+  /* Aliased to brand to overwrite all legacy usages without breaking layouts */
   --accent-orange: var(--primary-brand);
   --accent-orange-hover: var(--primary-brand-dark);
   --accent-orange-light: var(--primary-brand-glow);
   --accent-orange-border: var(--primary-brand-border);
 
-  --info-blue: #0284c7;
-  --info-blue-dark: #0369a1;
-  --info-blue-light: #f0f9ff;
-  --info-blue-border: #bae6fd;
+  --info-blue: #1976D2;
+  --info-blue-dark: #1565c0;
+  --info-blue-light: #e3f2fd;
+  --info-blue-border: #90caf9;
 
-  --text-dark: #1c1c1c; /* Softer black */
-  --text-body: #3d4152; /* Swiggy-like text body */
-  --text-muted: #686b78;
-  --text-light: #93959f;
+  --error-red: #C62828;
+  --error-red-light: #ffebee;
+
+  --text-dark: #202124; 
+  --text-body: #4A4A4A; 
+  --text-muted: #777777;
+  --text-light: #A0A0A0;
   --text-white: #ffffff;
 
-  --bg-body: #f8f9fa;
+  --bg-body: #FAF7F2;
   --bg-surface: #ffffff;
-  --bg-subtle: #f0f0f5;
-  --bg-dark: #1c1c1c;
+  --bg-subtle: #FDFBF7;
+  --bg-dark: #202124;
 
-  --border-light: #e9e9eb;
-  --border-subtle: #d4d5d9;
+  --border-light: #E0DFDB;
+  --border-subtle: #E0DFDB;
+  --border-active: #C9A227;
 
-  --shadow-xs: 0 2px 4px rgba(28, 28, 28, 0.04);
-  --shadow-sm: 0 4px 8px rgba(28, 28, 28, 0.06);
-  --shadow-md: 0 8px 16px rgba(28, 28, 28, 0.08);
-  --shadow-lg: 0 16px 32px rgba(28, 28, 28, 0.1);
-  --shadow-glow-brand: 0 8px 24px rgba(252, 128, 25, 0.25);
+  --shadow-xs: 0 2px 4px rgba(46, 125, 50, 0.04);
+  --shadow-sm: 0 4px 8px rgba(46, 125, 50, 0.06);
+  --shadow-md: 0 8px 16px rgba(46, 125, 50, 0.08);
+  --shadow-lg: 0 16px 32px rgba(46, 125, 50, 0.1);
+  --shadow-glow-brand: 0 8px 24px rgba(46, 125, 50, 0.25);
 
   --radius-xs: 6px;
   --radius-sm: 10px;
@@ -140,7 +146,7 @@ input, textarea, select {
   background-color: var(--primary-brand);
   color: var(--text-white);
   padding: 12px 24px;
-  border-radius: var(--radius-full);
+  border-radius: var(--radius-md);
   font-weight: 700;
   font-size: 1rem;
   transition: var(--transition-base);
@@ -148,14 +154,14 @@ input, textarea, select {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 4px 12px rgba(252, 128, 25, 0.25);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.2);
   border: none;
 }
 
 .btn-primary:hover:not(:disabled) {
   background-color: var(--primary-brand-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(252, 128, 25, 0.35);
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.3);
 }
 
 .btn-primary:active:not(:disabled) {
@@ -169,7 +175,7 @@ input, textarea, select {
 }
 
 .btn-accent {
-  background-color: var(--accent-orange);
+  background-color: var(--primary-brand);
   color: var(--text-white);
   padding: 12px 24px;
   border-radius: var(--radius-md);
@@ -180,19 +186,19 @@ input, textarea, select {
   align-items: center;
   justify-content: center;
   gap: 8px;
-  box-shadow: 0 2px 8px rgba(234, 88, 12, 0.2);
+  box-shadow: 0 2px 8px rgba(46, 125, 50, 0.15);
 }
 
 .btn-accent:hover:not(:disabled) {
-  background-color: var(--accent-orange-hover);
+  background-color: var(--primary-brand-dark);
   transform: translateY(-1px);
-  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.3);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
 }
 
 .btn-outline {
   background-color: transparent;
-  color: var(--primary-green);
-  border: 1.5px solid var(--primary-green);
+  color: var(--primary-brand);
+  border: 1.5px solid var(--primary-brand);
   padding: 10px 22px;
   border-radius: var(--radius-md);
   font-weight: 700;
@@ -201,8 +207,8 @@ input, textarea, select {
 }
 
 .btn-outline:hover {
-  background-color: var(--primary-green-glow);
-  color: var(--primary-green-dark);
+  background-color: var(--primary-brand-light);
+  color: var(--primary-brand-dark);
 }
 
 /* Utilities */

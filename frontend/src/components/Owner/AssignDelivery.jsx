@@ -271,7 +271,7 @@ const AssignDelivery = ({ orderId, onBack }) => {
               >
                 {/* Avatar with Status Indicator */}
                 <div style={{ position: 'relative', margin: '0 auto 12px' }}>
-                  <div className="dboy-avatar" style={{ background: isBusy ? '#fff7ed' : '#e0f2fe', color: isBusy ? '#ea580c' : '#0284c7' }}>
+                  <div className="dboy-avatar" style={{ background: isBusy ? '#fff7ed' : '#e0f2fe', color: isBusy ? '#2E7D32' : '#0284c7' }}>
                     <User size={34} />
                   </div>
                   <span 
@@ -311,7 +311,7 @@ const AssignDelivery = ({ orderId, onBack }) => {
                         fontSize: '0.82rem',
                         fontWeight: '700'
                       }}>
-                        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#ea580c' }} />
+                        <span style={{ width: '7px', height: '7px', borderRadius: '50%', background: '#2E7D32' }} />
                         <span>Busy (Order #{activeOrder.id.substring(0, 6).toUpperCase()})</span>
                       </div>
                     ) : (
@@ -346,7 +346,7 @@ const AssignDelivery = ({ orderId, onBack }) => {
                   }}>
                     <div style={{ textAlign: 'center' }}>
                       <span style={{ color: '#64748b', fontSize: '0.75rem', display: 'block' }}>Active</span>
-                      <strong style={{ color: isBusy ? '#ea580c' : '#0f172a' }}>{isBusy ? '1 Order' : '0'}</strong>
+                      <strong style={{ color: isBusy ? '#2E7D32' : '#0f172a' }}>{isBusy ? '1 Order' : '0'}</strong>
                     </div>
                     <div style={{ borderLeft: '1px solid #e2e8f0', height: '24px', margin: 'auto 0' }} />
                     <div style={{ textAlign: 'center' }}>

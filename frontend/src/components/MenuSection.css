@@ -1,6 +1,6 @@
 .menu-section {
   padding: 64px 0 80px;
-  background-color: var(--bg-surface);
+  background-color: var(--bg-body);
 }
 
 .section-header {
@@ -241,7 +241,7 @@
   color: var(--primary-brand-dark);
   border-color: var(--primary-brand-border);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(252, 128, 25, 0.15);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.15);
 }
 
 .add-to-cart-btn:active:not(:disabled) {

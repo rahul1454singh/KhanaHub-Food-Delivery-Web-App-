@@ -146,14 +146,14 @@
   font-size: 0.95rem;
   cursor: pointer;
   transition: var(--transition-base);
-  box-shadow: 0 4px 12px rgba(252, 128, 25, 0.25);
+  box-shadow: 0 4px 12px rgba(46, 125, 50, 0.25);
   min-height: 44px;
 }
 
 .assign-btn:hover:not(:disabled) {
   background-color: var(--primary-brand-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(252, 128, 25, 0.35);
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.35);
 }
 
 .assign-btn:disabled {

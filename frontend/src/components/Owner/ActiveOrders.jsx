@@ -352,7 +352,7 @@ const ActiveOrders = ({ setPendingCount, onAssign }) => {
                     {isConfirmed && (
                       <button 
                         className="btn-action prepare"
-                        style={{ backgroundColor: '#ea580c', color: 'white' }}
+                        style={{ backgroundColor: '#2E7D32', color: 'white' }}
                         onClick={(e) => updateOrderStatus(id, 'preparing', e)}
                       >
                         <ChefHat size={16} /> Prepare Order
@@ -466,7 +466,7 @@ const ActiveOrders = ({ setPendingCount, onAssign }) => {
               {selectedOrder.order_status === 'confirmed' && (
                 <button 
                   className="btn-action prepare" 
-                  style={{ width: 'auto', padding: '0.75rem 1.5rem', backgroundColor: '#ea580c', color: 'white' }}
+                  style={{ width: 'auto', padding: '0.75rem 1.5rem', backgroundColor: '#2E7D32', color: 'white' }}
                   onClick={() => updateOrderStatus(selectedOrder.id, 'preparing')}
                 >
                   <ChefHat size={16} /> Prepare Order

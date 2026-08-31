@@ -17,6 +17,18 @@ const Navbar = ({ view, onViewChange }) => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [hasActiveDelivery, setHasActiveDelivery] = useState(false);
 
+  // Handle body scroll locking for mobile drawer and logout modal
+  useEffect(() => {
+    if (isMobileMenuOpen || showLogoutModal) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'unset';
+    }
+    return () => {
+      document.body.style.overflow = 'unset';
+    };
+  }, [isMobileMenuOpen, showLogoutModal]);
+
   // Check if customer has an order Out for Delivery
   useEffect(() => {
     if (!user || user.role === 'owner' || user.role === 'delivery' || user.email?.startsWith('db')) {

@@ -320,7 +320,7 @@
   align-items: center;
   gap: 6px;
   background: #fff7ed;
-  color: #ea580c;
+  color: #2E7D32;
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 0.8rem;
@@ -504,7 +504,7 @@
 }
 
 .btn-orders:hover {
-  background: #ea580c;
+  background: #2E7D32;
   transform: translateY(-2px);
 }
 

@@ -218,7 +218,7 @@
   justify-content: center;
   align-items: center;
   width: 100%;
-  box-shadow: 0 4px 14px rgba(252, 128, 25, 0.3);
+  box-shadow: 0 4px 14px rgba(46, 125, 50, 0.3);
   min-height: 52px;
   letter-spacing: 0.5px;
   text-transform: uppercase;
@@ -227,7 +227,7 @@
 .submit-checkout-btn:hover:not(:disabled) {
   background-color: var(--primary-brand-dark);
   transform: translateY(-2px);
-  box-shadow: 0 6px 16px rgba(252, 128, 25, 0.4);
+  box-shadow: 0 6px 16px rgba(46, 125, 50, 0.4);
 }
 
 .submit-checkout-btn:disabled {
