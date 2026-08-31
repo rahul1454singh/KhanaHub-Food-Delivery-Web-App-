@@ -368,6 +368,9 @@
     padding-right: 16px;
     -webkit-overflow-scrolling: touch;
     scroll-behavior: smooth;
+    /* Create a faded edge effect for the peeking side cards */
+    -webkit-mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
+    mask-image: linear-gradient(to right, transparent, black 6%, black 94%, transparent);
   }
   
   .menu-grid::-webkit-scrollbar {
@@ -375,7 +378,7 @@
   }
 
   .menu-card {
-    min-width: calc(100% - 48px); /* Leaves 48px of space so next/prev cards prominently peek in */
+    min-width: calc(100% - 24px); /* Leaves a smaller 24px space so next/prev cards have a subtle peek */
     flex: 0 0 auto;
     scroll-snap-align: center;
     scroll-snap-stop: always;
