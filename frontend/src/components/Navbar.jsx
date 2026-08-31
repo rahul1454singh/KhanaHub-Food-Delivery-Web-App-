@@ -20,12 +20,12 @@ const Navbar = ({ view, onViewChange }) => {
   // Handle body scroll locking for mobile drawer and logout modal
   useEffect(() => {
     if (isMobileMenuOpen || showLogoutModal) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; document.documentElement.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
     };
   }, [isMobileMenuOpen, showLogoutModal]);
 

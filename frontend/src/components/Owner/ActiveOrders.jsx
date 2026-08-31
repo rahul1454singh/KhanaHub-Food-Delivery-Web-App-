@@ -114,12 +114,12 @@ const ActiveOrders = ({ setPendingCount, onAssign }) => {
   // Lock body scroll when modal is open
   useEffect(() => {
     if (selectedOrder || assignModalOrder) {
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; document.documentElement.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
     };
   }, [selectedOrder, assignModalOrder]);
 

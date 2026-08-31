@@ -23,6 +23,17 @@ const AuthModal = ({ isOpen, onClose }) => {
     onClose();
   };
 
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = 'hidden'; document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
+    };
+  }, [isOpen]);
+
   const otpRefs = React.useRef([]);
 
   const handleOtpChange = (index, value) => {
@@ -81,13 +92,13 @@ const AuthModal = ({ isOpen, onClose }) => {
       setIsSignupLoading(false);
       setIsOtpLoading(false);
       setIsGoogleLoading(false);
-      document.body.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden'; document.documentElement.style.overflow = 'hidden';
     } else {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
     }
     
     return () => {
-      document.body.style.overflow = 'unset';
+      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
     }
   }, [isOpen]);
 
