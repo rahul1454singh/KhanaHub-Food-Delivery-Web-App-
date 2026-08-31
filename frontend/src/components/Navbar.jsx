@@ -216,7 +216,7 @@ const Navbar = ({ view, onViewChange }) => {
               <Menu size={26} />
             </button>
             <a href="/" className="navbar-brand" onClick={(e) => { e.preventDefault(); handleNavigate('home'); }}>
-              <img src="/logo/newlogo.png" alt="KhanaHub Logo" className="navbar-logo" />
+              <img src="https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png" alt="KhanaHub Logo" className="navbar-logo" />
               <span className="navbar-title italic-brand" style={{ display: 'flex', alignItems: 'center' }}>
                 KhanaHub 
                 {user && (
@@ -336,7 +336,7 @@ const Navbar = ({ view, onViewChange }) => {
       <div className={`mobile-left-drawer ${isMobileMenuOpen ? 'open' : ''}`}>
         <div className="mobile-drawer-header">
           <div className="mobile-drawer-brand" onClick={() => handleNavigate('home')}>
-            <img src="/logo/newlogo.png" alt="KhanaHub Logo" className="mobile-drawer-logo" />
+            <img src="https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png" alt="KhanaHub Logo" className="mobile-drawer-logo" />
             <span className="navbar-title italic-brand">
               KhanaHub {user && (
                 <span style={{ 

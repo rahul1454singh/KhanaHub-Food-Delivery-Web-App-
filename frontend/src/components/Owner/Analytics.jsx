@@ -150,7 +150,7 @@ const Analytics = () => {
                 <img 
                   src={item.image.startsWith('http') ? item.image : item.image} 
                   alt={item.name} 
-                  onError={(e) => { e.target.src = '/logo/newlogo.png'; }}
+                  onError={(e) => { e.target.src = 'https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png'; }}
                 />
                 <div className="item-info">
                   <h4>{item.name}</h4>

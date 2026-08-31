@@ -23,7 +23,7 @@ const Hero = () => {
         <div className="hero-image-wrapper">
           <div className="hero-video-container">
             <video 
-              src="/video/Create_a_single_premium_cinema.mp4" 
+              src="https://res.cloudinary.com/n3wagpa9/video/upload/f_auto,q_auto/v1/khanahub/video/Create_a_single_premium_cinema.mp4" 
               autoPlay 
               loop 
               muted 

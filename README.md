@@ -13,7 +13,8 @@ KhanaHub is a premium, full-stack food delivery web application designed to brin
 ## 🚀 Tech Stack
 
 - **Frontend**: React.js (Vite), plain CSS Modules for custom styling, Lucide React (Icons).
-- **Backend & Database**: Supabase (PostgreSQL, Realtime, Storage, Edge Functions).
+- **Backend & Database**: Supabase (PostgreSQL, Realtime, Edge Functions).
+- **Media & Storage**: Cloudinary (for menu images, logos, and owner uploads).
 - **Payment Gateway**: Razorpay.
 
 ## 🛠️ Local Development

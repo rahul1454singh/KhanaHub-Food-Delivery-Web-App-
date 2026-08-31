@@ -150,7 +150,7 @@ const OwnerDashboard = () => {
           <h1>{activeTab.replace('-', ' ').toUpperCase()}</h1>
           <div className="owner-header-user">
             <span className="owner-email">{user.email}</span>
-            <img src="/logo/newlogo.png" alt="KhanaHub Logo" className="owner-avatar-logo" />
+            <img src="https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1/khanahub/logo/newlogo.png" alt="KhanaHub Logo" className="owner-avatar-logo" />
           </div>
         </header>
         

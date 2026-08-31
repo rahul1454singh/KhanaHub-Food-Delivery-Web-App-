@@ -66,28 +66,34 @@ const AddMenu = ({ onMenuAdded }) => {
   const uploadImage = async () => {
     if (!imageFile) return null;
     setUploading(true);
-    const toastId = toast.loading('Uploading image...');
+    const toastId = toast.loading('Uploading image to Cloudinary...');
     
     try {
-      const fileExt = imageFile.name.split('.').pop();
-      const fileName = `${Math.random()}.${fileExt}`;
-      const filePath = `${fileName}`;
+      const formData = new FormData();
+      formData.append('file', imageFile);
+      
+      // Loaded from .env with fallback to actual names just in case
+      const uploadPreset = import.meta.env.VITE_CLOUDINARY_UPLOAD_PRESET || 'khanahub_preset'; 
+      const cloudName = import.meta.env.VITE_CLOUDINARY_CLOUD_NAME || 'n3wagpa9';
 
-      const { error: uploadError } = await supabase.storage
-        .from('menu-images')
-        .upload(filePath, imageFile);
+      // Use Cloudinary Unsigned Upload API
+      const response = await fetch(`https://api.cloudinary.com/v1_1/${cloudName}/image/upload`, {
+        method: 'POST',
+        body: formData
+      });
 
-      if (uploadError) throw uploadError;
+      const data = await response.json();
 
-      const { data } = supabase.storage
-        .from('menu-images')
-        .getPublicUrl(filePath);
+      if (!response.ok) {
+        throw new Error(data.error?.message || 'Cloudinary upload failed');
+      }
 
-      toast.success('Image uploaded successfully', { id: toastId });
-      return data.publicUrl;
+      toast.success('Image uploaded successfully to Cloudinary', { id: toastId });
+      // return the URL of the uploaded image
+      return data.secure_url; 
     } catch (error) {
       console.error('Upload error:', error);
-      toast.error('Error uploading image. Make sure the storage bucket exists.', { id: toastId });
+      toast.error('Error uploading image to Cloudinary. Check your Cloud Name / Preset.', { id: toastId });
       return null;
     } finally {
       setUploading(false);
