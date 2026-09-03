@@ -36,6 +36,8 @@ const MenuCard = ({ item }) => {
             alt={item.name} 
             className="card-image"
             style={{ filter: isOutOfStock ? 'grayscale(100%) opacity(0.7)' : 'none' }}
+            fetchpriority="high"
+            loading="eager"
             onError={(e) => { e.target.src = 'https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1788190253/newlogo_sterro.png'; setImageError(true); }}
           />
         ) : (
