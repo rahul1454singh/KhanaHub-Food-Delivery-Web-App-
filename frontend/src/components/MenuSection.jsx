@@ -14,6 +14,14 @@ const MenuCard = ({ item }) => {
   const isOutOfStock = item.available === false;
   const categoryClass = item.section ? `category-${item.section.toLowerCase().replace(/\s+/g, '-')}` : '';
 
+  const optimizeCloudinaryUrl = (url) => {
+    if (!url || !url.includes('res.cloudinary.com')) return url;
+    // Prevent adding it twice
+    if (url.includes('f_auto') || url.includes('q_auto')) return url;
+    // Inject f_auto,q_auto after /upload/
+    return url.replace('/upload/', '/upload/f_auto,q_auto/');
+  };
+
   return (
     <div className={`menu-card ${categoryClass} ${isOutOfStock ? 'out-of-stock-public-card' : ''}`}>
       <div className="card-image-container" style={{ position: 'relative' }}>
@@ -24,11 +32,11 @@ const MenuCard = ({ item }) => {
         )}
         {!imageError ? (
           <img 
-            src={item.image.startsWith('http') ? item.image : item.image} 
+            src={optimizeCloudinaryUrl(item.image.startsWith('http') ? item.image : item.image)} 
             alt={item.name} 
             className="card-image"
             style={{ filter: isOutOfStock ? 'grayscale(100%) opacity(0.7)' : 'none' }}
-            onError={(e) => { e.target.src = '/logo/newlogo.png'; setImageError(true); }}
+            onError={(e) => { e.target.src = 'https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1788190253/newlogo_sterro.png'; setImageError(true); }}
           />
         ) : (
           <div className="image-fallback">

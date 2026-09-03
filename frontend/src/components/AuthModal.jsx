@@ -226,7 +226,7 @@ const AuthModal = ({ isOpen, onClose }) => {
         </button>
 
         <div className="auth-header">
-          <img src="/logo/newlogo.png" alt="KhanaHub Logo" className="auth-logo" />
+          <img src="https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1788190253/newlogo_sterro.png" alt="KhanaHub Logo" className="auth-logo" />
           <h2 className="auth-title">
             {view === 'login' && 'Welcome Back'}
             {view === 'signup' && 'Create Account'}

@@ -243,7 +243,7 @@ const ViewMenu = () => {
               src={item.image.startsWith('http') ? item.image : item.image} 
               alt={item.name} 
               className="admin-card-img"
-              onError={(e) => { e.target.src = '/logo/newlogo.png'; }}
+              onError={(e) => { e.target.src = 'https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1788190253/newlogo_sterro.png'; }}
             />
             
             <div className="admin-card-content">

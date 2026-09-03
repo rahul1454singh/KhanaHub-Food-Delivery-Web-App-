@@ -7,7 +7,7 @@ const LoadingScreen = ({ message = 'Loading...' }) => {
       <div className="khanahub-loading-box">
         <div className="khanahub-loading-brand">
           <img 
-            src="/logo/newlogo.png" 
+            src="https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1788190253/newlogo_sterro.png" 
             alt="KhanaHub Logo" 
             className="khanahub-loading-logo" 
           />
