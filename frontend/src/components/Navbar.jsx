@@ -16,6 +16,7 @@ const Navbar = ({ view, onViewChange }) => {
   const [activeSection, setActiveSection] = useState('home');
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [hasActiveDelivery, setHasActiveDelivery] = useState(false);
+  const [pendingOwnerOrdersCount, setPendingOwnerOrdersCount] = useState(0);
 
   // Handle body scroll locking for mobile drawer and logout modal
   useEffect(() => {
@@ -79,6 +80,47 @@ const Navbar = ({ view, onViewChange }) => {
       checkActiveDelivery();
     };
 
+    globalChannel.on('broadcast', { event: 'order_status_changed' }, handleBroadcast);
+    globalChannel.on('broadcast', { event: 'order_updated' }, handleBroadcast);
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [user]);
+
+  // Check pending orders for Owner badge
+  useEffect(() => {
+    if (!user || user.role !== 'owner') {
+      setPendingOwnerOrdersCount(0);
+      return;
+    }
+
+    const checkOwnerPendingOrders = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('orders')
+          .select('id')
+          .in('order_status', ['pending', 'confirmed']);
+          
+        if (!error && data) {
+          setPendingOwnerOrdersCount(data.length);
+        }
+      } catch (e) {
+        console.error('Error fetching owner pending orders:', e);
+      }
+    };
+
+    checkOwnerPendingOrders();
+
+    const channel = supabase
+      .channel(`navbar_owner_pending_orders_${user.id}`)
+      .on('postgres_changes', { event: '*', schema: 'public', table: 'orders' }, () => {
+        checkOwnerPendingOrders();
+      })
+      .subscribe();
+
+    const globalChannel = getGlobalRealtimeChannel();
+    const handleBroadcast = () => { checkOwnerPendingOrders(); };
     globalChannel.on('broadcast', { event: 'order_status_changed' }, handleBroadcast);
     globalChannel.on('broadcast', { event: 'order_updated' }, handleBroadcast);
 
@@ -261,8 +303,25 @@ const Navbar = ({ view, onViewChange }) => {
                 <button 
                   className={`nav-link-btn ${view === 'owner-dashboard' ? 'active' : ''}`} 
                   onClick={() => handleNavigate('owner-dashboard')}
+                  style={{ position: 'relative' }}
                 >
                   Owner Dashboard
+                  {pendingOwnerOrdersCount > 0 && (
+                    <span style={{
+                      position: 'absolute',
+                      top: '-6px',
+                      right: '-10px',
+                      background: '#ef4444',
+                      color: 'white',
+                      fontSize: '0.65rem',
+                      fontWeight: '800',
+                      padding: '2px 6px',
+                      borderRadius: '10px',
+                      boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                    }}>
+                      {pendingOwnerOrdersCount}
+                    </span>
+                  )}
                 </button>
               )}
               {user && (user.role === 'delivery' || user.email?.startsWith('db')) && (
@@ -402,6 +461,19 @@ const Navbar = ({ view, onViewChange }) => {
             >
               <Package size={20} />
               <span>Owner Dashboard</span>
+              {pendingOwnerOrdersCount > 0 && (
+                <span style={{
+                  marginLeft: 'auto',
+                  background: '#ef4444',
+                  color: 'white',
+                  fontSize: '0.75rem',
+                  fontWeight: '800',
+                  padding: '2px 8px',
+                  borderRadius: '10px',
+                }}>
+                  {pendingOwnerOrdersCount}
+                </span>
+              )}
             </button>
           )}
 
