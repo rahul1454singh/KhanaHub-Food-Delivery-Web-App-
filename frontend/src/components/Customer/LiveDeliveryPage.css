@@ -5,8 +5,32 @@
 }
 
 .live-delivery-content {
-  max-width: 960px;
+  max-width: 1100px;
   margin: 0 auto;
+}
+
+.live-delivery-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media (min-width: 992px) {
+  .live-delivery-grid {
+    grid-template-columns: 1.2fr 1fr;
+    align-items: stretch;
+  }
+}
+
+.live-delivery-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.live-delivery-right {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
 /* Hero Status Banner */
@@ -72,10 +96,9 @@
 .delivery-partner-card {
   background: white;
   border-radius: 18px;
-  padding: 22px 26px;
+  padding: 18px 22px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
   border: 1px solid #e2e8f0;
-  margin-bottom: 24px;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -144,7 +167,6 @@
   display: flex;
   align-items: center;
   gap: 14px;
-  margin-bottom: 24px;
   color: #92400e;
 }
 

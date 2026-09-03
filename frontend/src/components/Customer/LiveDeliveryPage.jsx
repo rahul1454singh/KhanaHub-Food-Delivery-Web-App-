@@ -211,79 +211,82 @@ const LiveDeliveryPage = ({ onViewChange }) => {
         </div>
 
         {/* Live Road Navigation Map */}
-        <LiveTrackingMap
-          customerLocation={details.location || { lat: details.lat, lng: details.lng }}
-          customerAddress={details.address}
-          deliveryBoyLocation={deliveryBoyLocation}
-          isLiveTracking={true}
-        />
-
-        {/* Delivery Partner Contact Card */}
-        <div className="delivery-partner-card">
-          <div className="partner-profile">
-            <div className="partner-avatar">
-              <User size={26} />
-            </div>
-            <div className="partner-details">
-              <h3>{deliveryBoyName}</h3>
-              <p>KhanaHub Assigned Delivery Partner</p>
-            </div>
+        <div className="live-delivery-grid">
+          <div className="live-delivery-left">
+            <LiveTrackingMap
+              customerLocation={details.location || { lat: details.lat, lng: details.lng }}
+              customerAddress={details.address}
+              deliveryBoyLocation={deliveryBoyLocation}
+              isLiveTracking={true}
+            />
           </div>
 
-          <a href={`tel:${deliveryBoyPhone}`} className="partner-call-btn">
-            <Phone size={18} /> Call Delivery Partner
-          </a>
-        </div>
-
-        {/* OTP Verification Notice */}
-        <div className="otp-notice-box" style={{ background: '#f0fdf4', border: '2px dashed #86efac', borderRadius: '14px', padding: '18px 20px' }}>
-          <ShieldAlert size={32} className="otp-notice-icon" style={{ color: '#16a34a' }} />
-          <div className="otp-notice-text" style={{ flex: 1 }}>
-            <h4 style={{ color: '#14532d', fontSize: '1.05rem', fontWeight: '800', margin: 0 }}>Delivery Confirmation OTP</h4>
-            <p style={{ color: '#166534', fontSize: '0.88rem', margin: '4px 0 0 0' }}>
-              Give this 6-digit OTP to your delivery partner when they arrive to receive your food.
-            </p>
-            {details.delivery_otp ? (
-              <div style={{
-                marginTop: '12px',
-                display: 'inline-block',
-                background: 'white',
-                padding: '8px 22px',
-                borderRadius: '10px',
-                border: '2px solid #16a34a',
-                fontSize: '1.6rem',
-                fontWeight: '900',
-                letterSpacing: '6px',
-                color: '#15803d',
-                boxShadow: '0 2px 10px rgba(22, 163, 74, 0.15)'
-              }}>
-                {details.delivery_otp}
+          <div className="live-delivery-right">
+            {/* Delivery Partner Contact Card */}
+            <div className="delivery-partner-card">
+              <div className="partner-profile">
+                <div className="partner-avatar">
+                  <User size={26} />
+                </div>
+                <div className="partner-details">
+                  <h3>{deliveryBoyName}</h3>
+                  <p>KhanaHub Assigned Delivery Partner</p>
+                </div>
               </div>
-            ) : (
-              <p style={{ marginTop: '6px', fontSize: '0.82rem', color: '#64748b', fontStyle: 'italic' }}>
-                Your OTP will appear here as soon as your delivery rider requests it upon arrival.
-              </p>
-            )}
-          </div>
-        </div>
 
-        {/* Order Breakdown */}
-        <div className="live-order-summary">
-          <h3>Order Summary</h3>
-          <ul className="live-items-list">
-            {(activeOrder.items || []).map((item, idx) => (
-              <li key={idx} className="live-item-row">
-                <span>
-                  <strong>{item.quantity}x</strong> {item.name} {item.variant ? `(${item.variant})` : ''}
-                </span>
-                <span style={{ fontWeight: '600' }}>₹{(item.price || 0) * item.quantity}</span>
-              </li>
-            ))}
-          </ul>
+              <a href={`tel:${deliveryBoyPhone}`} className="partner-call-btn">
+                <Phone size={18} /> Call
+              </a>
+            </div>
 
-          <div className="live-bill-totals">
-            <span>Total Paid</span>
-            <span>₹{activeOrder.grand_total || activeOrder.total_amount}</span>
+            {/* OTP Verification Notice */}
+            <div className="otp-notice-box" style={{ background: '#f0fdf4', border: '2px dashed #86efac', borderRadius: '14px', padding: '16px' }}>
+              <ShieldAlert size={28} className="otp-notice-icon" style={{ color: '#16a34a' }} />
+              <div className="otp-notice-text" style={{ flex: 1 }}>
+                <h4 style={{ color: '#14532d', fontSize: '1rem', fontWeight: '800', margin: 0 }}>Delivery OTP</h4>
+                {details.delivery_otp ? (
+                  <div style={{
+                    marginTop: '8px',
+                    display: 'inline-block',
+                    background: 'white',
+                    padding: '6px 16px',
+                    borderRadius: '8px',
+                    border: '2px solid #16a34a',
+                    fontSize: '1.4rem',
+                    fontWeight: '900',
+                    letterSpacing: '4px',
+                    color: '#15803d',
+                    boxShadow: '0 2px 10px rgba(22, 163, 74, 0.15)'
+                  }}>
+                    {details.delivery_otp}
+                  </div>
+                ) : (
+                  <p style={{ marginTop: '4px', fontSize: '0.8rem', color: '#166534' }}>
+                    Give this 6-digit OTP to your delivery partner. It will appear here when requested.
+                  </p>
+                )}
+              </div>
+            </div>
+
+            {/* Order Breakdown */}
+            <div className="live-order-summary">
+              <h3>Order Summary</h3>
+              <ul className="live-items-list">
+                {(activeOrder.items || []).map((item, idx) => (
+                  <li key={idx} className="live-item-row">
+                    <span>
+                      <strong>{item.quantity}x</strong> {item.name} {item.variant ? `(${item.variant})` : ''}
+                    </span>
+                    <span style={{ fontWeight: '600' }}>₹{(item.price || 0) * item.quantity}</span>
+                  </li>
+                ))}
+              </ul>
+
+              <div className="live-bill-totals">
+                <span>Total Paid</span>
+                <span>₹{activeOrder.grand_total || activeOrder.total_amount}</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
