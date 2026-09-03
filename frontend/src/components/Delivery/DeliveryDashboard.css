@@ -433,3 +433,51 @@
     justify-content: center;
   }
 }
+
+/* Grid Dashboard Layout (Like LiveDeliveryPage) */
+.active-delivery-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+@media (min-width: 900px) {
+  .active-delivery-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr;
+    gap: 24px;
+    align-items: stretch;
+  }
+
+  .active-delivery-left {
+    display: flex;
+    flex-direction: column;
+    min-height: 500px;
+  }
+
+  .active-delivery-right {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    justify-content: flex-start;
+  }
+
+  /* Make sure the Map wrapper in the left column grows to fill the height */
+  .active-delivery-left .live-tracking-map-wrapper {
+    flex-grow: 1;
+    height: 100%;
+    min-height: 500px;
+  }
+  
+  .active-delivery-right .customer-details-grid {
+    margin-bottom: 0;
+  }
+  
+  .active-delivery-right .delivery-items-section {
+    margin-bottom: 0;
+  }
+  
+  .active-delivery-right .active-actions-bar {
+    margin-top: auto; /* Push the action bar to the bottom to align perfectly */
+  }
+}

@@ -408,100 +408,109 @@ const DeliveryDashboard = () => {
                       </span>
                     </div>
 
-                    {/* Interactive Road Navigation Map */}
-                    <LiveTrackingMap
-                      customerLocation={details.location || { lat: details.lat, lng: details.lng }}
-                      customerAddress={details.address}
-                      deliveryBoyLocation={currentLocation}
-                      isLiveTracking={isOutForDelivery}
-                    />
-
-                    {/* Customer & Delivery Information Grid */}
-                    <div className="customer-details-grid">
-                      <div className="detail-item">
-                        <User size={18} className="detail-icon" />
-                        <div className="detail-text">
-                          <h4>Customer Name</h4>
-                          <p>{details.name || details.fullName || 'Valued Customer'}</p>
-                        </div>
+                    {/* Grid Dashboard Layout */}
+                    <div className="active-delivery-grid">
+                      
+                      {/* Left Column: Interactive Road Navigation Map */}
+                      <div className="active-delivery-left">
+                        <LiveTrackingMap
+                          customerLocation={details.location || { lat: details.lat, lng: details.lng }}
+                          customerAddress={details.address}
+                          deliveryBoyLocation={currentLocation}
+                          isLiveTracking={isOutForDelivery}
+                        />
                       </div>
 
-                      <div className="detail-item">
-                        <Phone size={18} className="detail-icon" />
-                        <div className="detail-text">
-                          <h4>Contact Number</h4>
-                          <p>{details.phoneNumber || details.contact || 'N/A'}</p>
+                      {/* Right Column: Customer Details, Items, and Actions */}
+                      <div className="active-delivery-right">
+                        {/* Customer & Delivery Information Grid */}
+                        <div className="customer-details-grid">
+                          <div className="detail-item">
+                            <User size={18} className="detail-icon" />
+                            <div className="detail-text">
+                              <h4>Customer Name</h4>
+                              <p>{details.name || details.fullName || 'Valued Customer'}</p>
+                            </div>
+                          </div>
+
+                          <div className="detail-item">
+                            <Phone size={18} className="detail-icon" />
+                            <div className="detail-text">
+                              <h4>Contact Number</h4>
+                              <p>{details.phoneNumber || details.contact || 'N/A'}</p>
+                            </div>
+                          </div>
+
+                          <div className="detail-item">
+                            <MapPin size={18} className="detail-icon" />
+                            <div className="detail-text">
+                              <h4>Delivery Address</h4>
+                              <p>{details.address || 'N/A'}{details.city ? `, ${details.city}` : ''}</p>
+                            </div>
+                          </div>
+
+                          <div className="detail-item">
+                            <Receipt size={18} className="detail-icon" />
+                            <div className="detail-text">
+                              <h4>Bill Total</h4>
+                              <p>₹{order.grand_total || order.total_amount || 0} ({order.payment_status?.toUpperCase() || 'PAID'})</p>
+                            </div>
+                          </div>
                         </div>
-                      </div>
 
-                      <div className="detail-item">
-                        <MapPin size={18} className="detail-icon" />
-                        <div className="detail-text">
-                          <h4>Delivery Address</h4>
-                          <p>{details.address || 'N/A'}{details.city ? `, ${details.city}` : ''}</p>
+                        {/* Ordered Items */}
+                        <div className="delivery-items-section">
+                          <h4>Food Items to Deliver ({order.items?.length || 0})</h4>
+                          <ul className="delivery-items-list">
+                            {(order.items || []).map((item, idx) => (
+                              <li key={idx} className="delivery-item-row">
+                                <span>
+                                  <span className="item-qty-tag">{item.quantity}x</span>
+                                  <strong>{item.name}</strong> {item.variant ? `(${item.variant})` : ''}
+                                </span>
+                                <span style={{ fontWeight: '600' }}>₹{(item.price || 0) * item.quantity}</span>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
-                      </div>
 
-                      <div className="detail-item">
-                        <Receipt size={18} className="detail-icon" />
-                        <div className="detail-text">
-                          <h4>Bill Total</h4>
-                          <p>₹{order.grand_total || order.total_amount || 0} ({order.payment_status?.toUpperCase() || 'PAID'})</p>
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Ordered Items */}
-                    <div className="delivery-items-section">
-                      <h4>Food Items to Deliver ({order.items?.length || 0})</h4>
-                      <ul className="delivery-items-list">
-                        {(order.items || []).map((item, idx) => (
-                          <li key={idx} className="delivery-item-row">
-                            <span>
-                              <span className="item-qty-tag">{item.quantity}x</span>
-                              <strong>{item.name}</strong> {item.variant ? `(${item.variant})` : ''}
-                            </span>
-                            <span style={{ fontWeight: '600' }}>₹{(item.price || 0) * item.quantity}</span>
-                          </li>
-                        ))}
-                      </ul>
-                    </div>
-
-                    {/* Action Bar */}
-                    <div className="active-actions-bar">
-                      {!isOutForDelivery ? (
-                        <button 
-                          className="btn-out-delivery"
-                          onClick={() => handleOutForDelivery(order)}
-                          disabled={actionLoadingId === order.id}
-                        >
-                          {actionLoadingId === order.id ? (
-                            <>
-                              <IOSSpinner size={18} color="white" /> Updating...
-                            </>
+                        {/* Action Bar */}
+                        <div className="active-actions-bar">
+                          {!isOutForDelivery ? (
+                            <button 
+                              className="btn-out-delivery"
+                              onClick={() => handleOutForDelivery(order)}
+                              disabled={actionLoadingId === order.id}
+                            >
+                              {actionLoadingId === order.id ? (
+                                <>
+                                  <IOSSpinner size={18} color="white" /> Updating...
+                                </>
+                              ) : (
+                                <>
+                                  <Navigation size={18} /> Out for Delivery
+                                </>
+                              )}
+                            </button>
                           ) : (
-                            <>
-                              <Navigation size={18} /> Out for Delivery
-                            </>
+                            <button 
+                              className="btn-request-otp"
+                              onClick={() => handleRequestOtp(order)}
+                              disabled={actionLoadingId === order.id}
+                            >
+                              {actionLoadingId === order.id ? (
+                                <>
+                                  <IOSSpinner size={18} color="white" /> Sending OTP...
+                                </>
+                              ) : (
+                                <>
+                                  <KeyRound size={18} /> Request & Verify OTP
+                                </>
+                              )}
+                            </button>
                           )}
-                        </button>
-                      ) : (
-                        <button 
-                          className="btn-request-otp"
-                          onClick={() => handleRequestOtp(order)}
-                          disabled={actionLoadingId === order.id}
-                        >
-                          {actionLoadingId === order.id ? (
-                            <>
-                              <IOSSpinner size={18} color="white" /> Sending OTP...
-                            </>
-                          ) : (
-                            <>
-                              <KeyRound size={18} /> Request & Verify OTP
-                            </>
-                          )}
-                        </button>
-                      )}
+                        </div>
+                      </div>
                     </div>
                   </div>
                 );
