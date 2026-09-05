@@ -496,6 +496,10 @@
   background-color: rgba(15, 23, 42, 0.2);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
+  transform: translate3d(0, 0, 0);
+  -webkit-transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
   display: flex;
   justify-content: center;
   align-items: center;
