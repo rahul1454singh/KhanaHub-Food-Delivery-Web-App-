@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+﻿import React, { useState, useEffect, useRef } from 'react';
 import Navbar from './components/Navbar';
 import Hero from './components/Hero';
 import MenuSection from './components/MenuSection';
@@ -12,11 +12,13 @@ import PaymentSuccess from './components/PaymentSuccess/PaymentSuccess';
 import OwnerDashboard from './components/Owner/OwnerDashboard';
 import DeliveryDashboard from './components/Delivery/DeliveryDashboard';
 import LiveDeliveryPage from './components/Customer/LiveDeliveryPage';
+import UserProfile from './components/Customer/UserProfile';
 import LoadingScreen from './components/LoadingScreen';
 import OwnerDashboardPlaceholder from './components/OwnerDashboardPlaceholder';
 import { useCart } from './context/CartContext';
 import { useAuth } from './context/AuthContext';
 import { Toaster, toast, ToastBar } from 'react-hot-toast';
+import { Home, Search, ShoppingBag, User } from 'lucide-react';
 import './index.css';
 
 const getInitialView = () => {
@@ -30,6 +32,7 @@ const getInitialView = () => {
   if (path === '/payment') return 'payment'; // Map /payment to checkout but open modal
   if (path === '/orders' || path === '/my-orders') return 'my-orders';
   if (path === '/order-history') return 'order-history';
+  if (path === '/profile') return 'profile';
   if (path === '/live-delivery' || path === '/tracking') return 'live-delivery';
   if (path === '/payment-success') return 'payment-success';
   return 'not-found';
@@ -53,6 +56,7 @@ function App() {
     if (view === 'payment') path = '/payment';
     if (view === 'my-orders') path = '/orders';
     if (view === 'order-history') path = '/order-history';
+    if (view === 'profile') path = '/profile';
     if (view === 'live-delivery') path = '/live-delivery';
     if (view === 'payment-success') path = '/payment-success';
     if (view === 'menu') path = '/menu';
@@ -99,7 +103,8 @@ function App() {
         }
       }, 400);
     }
-  }, [view, openCart, authLoading]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [view, authLoading]);
 
   const handleViewChange = (newView) => {
     setView(newView);
@@ -125,7 +130,7 @@ function App() {
   useEffect(() => {
     if (authLoading || globalLoading.isLoading) return; // Wait until auth restoration or logout is complete
 
-    const protectedRoutes = ['checkout', 'payment', 'my-orders', 'order-history', 'live-delivery', 'owner-dashboard', 'delivery-dashboard'];
+    const protectedRoutes = ['checkout', 'payment', 'my-orders', 'order-history', 'profile', 'live-delivery', 'owner-dashboard', 'delivery-dashboard'];
 
     // 1. Unauthenticated user trying to access protected route
     if (!user && protectedRoutes.includes(view)) {
@@ -220,7 +225,7 @@ function App() {
       <Navbar view={view} onViewChange={handleViewChange} />
       <CartSidebar onCheckout={handleCheckoutClick} />
       <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
-      <Toaster 
+            <Toaster 
         position="top-right"
         containerStyle={{
           top: 85,
@@ -230,12 +235,14 @@ function App() {
         toastOptions={{
           duration: 4500,
           style: {
-            background: '#ffffff',
+            background: 'rgba(255, 255, 255, 0.95)',
+            backdropFilter: 'blur(16px)',
+            WebkitBackdropFilter: 'blur(16px)',
             color: '#1e293b',
-            border: '1px solid #e2e8f0',
-            boxShadow: '0 12px 32px -4px rgba(0, 0, 0, 0.15), 0 6px 12px -4px rgba(0, 0, 0, 0.08)',
-            borderRadius: '12px',
-            padding: '12px 18px',
+            border: '1px solid rgba(255,255,255,0.4)',
+            boxShadow: '0 10px 40px -10px rgba(46,125,50,0.15)',
+            borderRadius: '16px',
+            padding: '14px 20px',
             fontWeight: '600',
             fontSize: '0.92rem',
             maxWidth: '420px',
@@ -246,7 +253,7 @@ function App() {
           },
           success: {
             iconTheme: {
-              primary: '#10b981',
+              primary: 'var(--primary-brand)',
               secondary: '#ffffff',
             },
           },
@@ -259,31 +266,31 @@ function App() {
         }} 
       >
         {(t) => (
-          <ToastBar toast={t}>
+          <ToastBar toast={t} style={{ ...t.style, animation: t.visible ? 'toastEnter 0.4s var(--ease-spring) forwards' : 'toastExit 0.3s var(--ease-smooth) forwards' }}>
             {({ icon, message }) => (
               <>
                 {icon}
-                <div style={{ flex: 1, paddingRight: '8px', overflowWrap: 'break-word', wordBreak: 'break-word' }}>
+                <div style={{ flex: 1, paddingRight: '12px', paddingLeft: '8px', overflowWrap: 'break-word', wordBreak: 'break-word', color: 'var(--text-dark)' }}>
                   {message}
                 </div>
                 {t.type !== 'loading' && (
                   <button
                     onClick={() => toast.dismiss(t.id)}
                     style={{
-                      background: 'transparent',
-                      border: 'none',
+                      background: 'var(--bg-subtle)',
+                      border: '1px solid var(--border-subtle)',
                       cursor: 'pointer',
-                      padding: '4px',
+                      padding: '6px',
                       display: 'flex',
                       alignItems: 'center',
                       justifyContent: 'center',
-                      color: '#94a3b8',
+                      color: 'var(--text-muted)',
                       flexShrink: 0,
                       borderRadius: '50%',
-                      transition: 'background 0.2s'
+                      transition: 'all 0.2s ease'
                     }}
                     onMouseOver={(e) => e.currentTarget.style.background = '#f1f5f9'}
-                    onMouseOut={(e) => e.currentTarget.style.background = 'transparent'}
+                    onMouseOut={(e) => e.currentTarget.style.background = 'var(--bg-subtle)'}
                     aria-label="Close notification"
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
@@ -324,7 +331,8 @@ function App() {
           />
         )}
         {view === 'my-orders' && <OrdersPage type="my-orders" />}
-        {view === 'order-history' && <OrdersPage type="order-history" />}
+        {view === 'order-history' && <OrdersPage type="order-history" />} 
+        {view === 'profile' && <UserProfile />}
         {view === 'live-delivery' && <LiveDeliveryPage onViewChange={handleViewChange} />}
         {view === 'owner-dashboard' && <OwnerDashboard />}
         {view === 'delivery-dashboard' && <DeliveryDashboard />}
@@ -348,3 +356,4 @@ function App() {
 }
 
 export default App;
+

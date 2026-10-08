@@ -67,8 +67,6 @@ export const AuthProvider = ({ children }) => {
 
   // Fetch role and details from public.users table
   const fetchUserData = async (authUser) => {
-    const isOwner = authUser.email === 'khanahub@gmail.com';
-
     const { data, error } = await supabase
       .from('users')
       .select('*')
@@ -79,12 +77,12 @@ export const AuthProvider = ({ children }) => {
       setUser({ 
         ...authUser, 
         ...data,
-        role: isOwner ? 'owner' : (data.role || 'customer')
+        role: data.role || 'customer'
       });
     } else {
       setUser({
         ...authUser,
-        role: isOwner ? 'owner' : 'customer'
+        role: 'customer'
       });
     }
   };

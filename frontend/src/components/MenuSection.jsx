@@ -70,10 +70,19 @@ const MenuCard = ({ item }) => {
 const MenuSection = () => {
   const [activeCategory, setActiveCategory] = useState('All');
   const [dietaryFilter, setDietaryFilter] = useState('all'); // 'all', 'veg', 'non-veg'
+  const [searchTerm, setSearchTerm] = useState('');
   const [currentPage, setCurrentPage] = useState(1);
-  const [menuItems, setMenuItems] = useState([]);
-  const [categories, setCategories] = useState(['All', 'Drinks']);
-  const [loading, setLoading] = useState(true);
+  const localItems = menuData.map(item => ({
+    ...item,
+    section: item.category,
+    available: true,
+  }));
+  const uniqueCats = [...new Set(localItems.map(item => item.section))];
+  const formattedCats = ['All', ...uniqueCats.filter(c => c !== 'Drinks'), 'Drinks'];
+
+  const [menuItems, setMenuItems] = useState(localItems);
+  const [categories, setCategories] = useState(formattedCats);
+  const [loading, setLoading] = useState(false);
   const itemsPerPage = 10;
   const menuRef = React.useRef(null);
 
@@ -147,6 +156,11 @@ const MenuSection = () => {
   };
 
   const filteredMenu = menuItems.filter(item => {
+    // 0. Check Search Term
+    if (searchTerm && !item.name.toLowerCase().includes(searchTerm.toLowerCase())) {
+      return false;
+    }
+
     // 1. Check Category
     let matchCategory = false;
     if (activeCategory === 'All') {
@@ -176,7 +190,7 @@ const MenuSection = () => {
   // Reset pagination when filters change
   React.useEffect(() => {
     setCurrentPage(1);
-  }, [activeCategory, dietaryFilter]);
+  }, [activeCategory, dietaryFilter, searchTerm]);
 
   // Mobile Carousel Intersection Observer for "Pop" effect
   React.useEffect(() => {
@@ -249,6 +263,41 @@ const MenuSection = () => {
           <p className="section-subtitle">Discover our delicious offerings</p>
         </div>
 
+        <div className="menu-search-container" style={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+          <div style={{ position: 'relative', width: '100%', maxWidth: '400px' }}>
+            <input 
+              type="text" 
+              placeholder="Search for food..." 
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              style={{
+                width: '100%',
+                padding: '12px 20px 12px 40px',
+                borderRadius: '25px',
+                border: '1px solid #e2e8f0',
+                outline: 'none',
+                fontSize: '1rem',
+                boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
+              }}
+            />
+            <svg 
+              xmlns="http://www.w3.org/2000/svg" 
+              width="20" 
+              height="20" 
+              viewBox="0 0 24 24" 
+              fill="none" 
+              stroke="#94a3b8" 
+              strokeWidth="2" 
+              strokeLinecap="round" 
+              strokeLinejoin="round" 
+              style={{ position: 'absolute', left: '15px', top: '50%', transform: 'translateY(-50%)' }}
+            >
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+        </div>
+
         <div className="filter-controls">
           <div className="category-nav" style={{ marginBottom: 0 }}>
             {categories.map((category, index) => (
@@ -287,14 +336,21 @@ const MenuSection = () => {
         </div>
 
         <div className="menu-grid">
-          {currentItems.map(item => (
+          {loading ? (
+            Array.from({ length: 8 }).map((_, index) => (
+              <div key={`skeleton-${index}`} className="menu-card skeleton" style={{ height: '350px', border: 'none' }}></div>
+            ))
+          ) : currentItems.map(item => (
             <MenuCard key={item.id} item={item} />
           ))}
         </div>
         
-        {filteredMenu.length === 0 && (
-          <div className="text-center mt-4">
-            <p>No items found in this category.</p>
+        {!loading && filteredMenu.length === 0 && (
+          <div className="empty-state-container">
+            <ShoppingCart className="empty-state-icon" />
+            <h3 className="empty-state-title">No Items Found</h3>
+            <p className="empty-state-text">We couldn't find any food matching your current filters.</p>
+            <button className="btn-primary" onClick={() => { setSearchTerm(''); setDietaryFilter('all'); setActiveCategory('All'); }}>Clear Filters</button>
           </div>
         )}
 

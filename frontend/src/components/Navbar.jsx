@@ -20,13 +20,20 @@ const Navbar = ({ view, onViewChange }) => {
 
   // Handle body scroll locking for mobile drawer and logout modal
   useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape' && showLogoutModal) {
+        cancelLogout();
+      }
+    };
     if (isMobileMenuOpen || showLogoutModal) {
-      document.body.style.overflow = 'hidden'; document.documentElement.style.overflow = 'hidden';
+      document.body.style.overflow = 'hidden';
+      window.addEventListener('keydown', handleEsc);
     } else {
-      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
     }
     return () => {
-      document.body.style.overflow = ''; document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+      window.removeEventListener('keydown', handleEsc);
     };
   }, [isMobileMenuOpen, showLogoutModal]);
 
@@ -372,10 +379,15 @@ const Navbar = ({ view, onViewChange }) => {
             )}
 
             {user ? (
-              <button className="logout-btn" onClick={handleLogoutClick} aria-label="Logout">
-                <LogOut size={16} />
-                <span>Logout</span>
-              </button>
+              <>
+                <button className="nav-link-btn" style={{ padding: "8px", borderRadius: "50%", display: "flex", background: "var(--bg-subtle)" }} onClick={() => handleNavigate("profile")} title="My Profile">
+                  {user.user_metadata?.avatar_url || user.user_metadata?.picture ? <img src={user.user_metadata.avatar_url || user.user_metadata.picture} style={{ width: "24px", height: "24px", borderRadius: "50%", objectFit: "cover" }} alt="Profile" /> : <User size={20} />}
+                </button>
+                <button className="logout-btn" onClick={handleLogoutClick} aria-label="Logout">
+                  <LogOut size={16} />
+                  <span>Logout</span>
+                </button>
+              </>
             ) : (
               <button className="login-btn" onClick={() => setShowAuthModal(true)} aria-label="Login to your account">
                 <User size={18} />
@@ -419,7 +431,7 @@ const Navbar = ({ view, onViewChange }) => {
           {user && (
             <div className="mobile-drawer-user-card">
               <div className="user-avatar-circle">
-                <User size={22} />
+                {user.user_metadata?.avatar_url || user.user_metadata?.picture ? <img src={user.user_metadata.avatar_url || user.user_metadata.picture} alt="Profile" style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '50%' }} /> : <User size={22} />}
               </div>
               <div className="user-info-text">
                 <span className="user-email">{user.email}</span>
@@ -542,7 +554,7 @@ const Navbar = ({ view, onViewChange }) => {
       </div>
 
       {showLogoutModal && (
-        <div className="logout-modal-overlay">
+        <div className="logout-modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) cancelLogout(); }}>
           <div className="logout-modal">
             <button className="logout-close-btn" onClick={cancelLogout} aria-label="Close modal">
               <X size={20} />
@@ -567,3 +579,4 @@ const Navbar = ({ view, onViewChange }) => {
 };
 
 export default Navbar;
+

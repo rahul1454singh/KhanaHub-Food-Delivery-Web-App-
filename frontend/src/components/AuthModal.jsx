@@ -34,6 +34,16 @@ const AuthModal = ({ isOpen, onClose }) => {
     };
   }, [isOpen]);
 
+    useEffect(() => {
+    const handleEsc = (e) => {
+      if (e.key === 'Escape' && isOpen) {
+        handleClose();
+      }
+    };
+    window.addEventListener('keydown', handleEsc);
+    return () => window.removeEventListener('keydown', handleEsc);
+  }, [isOpen]);
+
   const otpRefs = React.useRef([]);
 
   const handleOtpChange = (index, value) => {
@@ -104,7 +114,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
   useEffect(() => {
     let timer;
-    if (view === 'otp' && countdown > 0) {
+    if ((view === 'otp' || view === 'otp_mobile') && countdown > 0) {
       timer = setInterval(() => setCountdown(c => c - 1), 1000);
     }
     return () => clearInterval(timer);
@@ -219,7 +229,7 @@ const AuthModal = ({ isOpen, onClose }) => {
   };
 
   return (
-    <div className="auth-modal-overlay">
+    <div className="auth-modal-overlay" onClick={(e) => { if (e.target === e.currentTarget) handleClose(); }}>
       <div className={`auth-modal-container ${view === 'signup' ? 'signup-mode' : ''}`}>
         <button onClick={handleClose} className="auth-close-btn" aria-label="Close modal">
           <X size={24} />
@@ -231,6 +241,7 @@ const AuthModal = ({ isOpen, onClose }) => {
             {view === 'login' && 'Welcome Back'}
             {view === 'signup' && 'Create Account'}
             {view === 'otp' && 'Verify Your Email'}
+            {(view === 'otp_selection' || view === 'otp_mobile') && 'Verify Account'}
           </h2>
           {view === 'login' && <p className="auth-subtitle">Login to continue ordering</p>}
           {view === 'signup' && <p className="auth-subtitle">Join KhanaHub for the best food delivery</p>}
@@ -238,7 +249,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
         {view === 'login' && authPromptMessage && (
           <div className="auth-prompt-banner">
-            <span className="auth-prompt-icon">🔒</span>
+            <span className="auth-prompt-icon">ðŸ”’</span>
             <span className="auth-prompt-text">{authPromptMessage}</span>
           </div>
         )}
@@ -292,10 +303,10 @@ const AuthModal = ({ isOpen, onClose }) => {
                 <label>Contact Number</label>
                 <div className="phone-input">
                   <select name="phoneCode" value={formData.phoneCode} onChange={handleChange} className="phone-code" disabled={isAnyLoading}>
-                    <option value="+977">🇳🇵 +977</option>
-                    <option value="+91">🇮🇳 +91</option>
-                    <option value="+1">🇺🇸 +1</option>
-                    <option value="+44">🇬🇧 +44</option>
+                    <option value="+977">ðŸ‡³ðŸ‡µ +977</option>
+                    <option value="+91">ðŸ‡®ðŸ‡³ +91</option>
+                    <option value="+1">ðŸ‡ºðŸ‡¸ +1</option>
+                    <option value="+44">ðŸ‡¬ðŸ‡§ +44</option>
                   </select>
                   <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} required placeholder="98XXXXXXXX" disabled={isAnyLoading} />
                 </div>
@@ -342,6 +353,89 @@ const AuthModal = ({ isOpen, onClose }) => {
               <div className="auth-switch">
                 <span>Already have an account? </span>
                 <button type="button" onClick={() => setView('login')} disabled={isAnyLoading}>Login</button>
+              </div>
+            </form>
+          )}
+
+          {view === 'otp_selection' && (
+            <div className="auth-form otp-selection-view">
+              <h3 style={{ textAlign: 'center', marginBottom: '8px', color: 'var(--text-dark)' }}>Verify Your Account</h3>
+              <p style={{ textAlign: 'center', color: 'var(--text-muted)', marginBottom: '24px', fontSize: '0.9rem' }}>
+                Where would you like us to send your 6-digit verification code?
+              </p>
+              
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+                <button 
+                  type="button" 
+                  onClick={handleSendEmailOTP}
+                  disabled={isSignupLoading}
+                  style={{ padding: '16px', background: 'var(--bg-subtle)', border: '1px solid var(--border-subtle)', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '16px', cursor: 'pointer', transition: 'all 0.2s', textAlign: 'left' }}
+                >
+                  <div style={{ background: '#e0f2fe', padding: '12px', borderRadius: '50%', color: '#0284c7' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="16" x="2" y="4" rx="2"></rect><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"></path></svg>
+                  </div>
+                  <div>
+                    <strong style={{ display: 'block', color: 'var(--text-dark)', fontSize: '1.05rem', marginBottom: '4px' }}>Send OTP to Email</strong>
+                    <span style={{ color: 'var(--text-muted)', fontSize: '0.85rem' }}>{formData.email}</span>
+                  </div>
+                </button>
+
+                <div style={{ padding: '16px', background: '#f8fafc', border: '1px dashed #cbd5e1', borderRadius: '12px', display: 'flex', alignItems: 'center', gap: '16px', opacity: 0.7, cursor: 'not-allowed', textAlign: 'left', position: 'relative' }}>
+                  <div style={{ background: '#f1f5f9', padding: '12px', borderRadius: '50%', color: '#94a3b8' }}>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect width="14" height="20" x="5" y="2" rx="2" ry="2"></rect><path d="M12 18h.01"></path></svg>
+                  </div>
+                  <div style={{ flex: 1 }}>
+                    <strong style={{ display: 'block', color: '#64748b', fontSize: '1.05rem', marginBottom: '4px' }}>Send OTP to Mobile</strong>
+                    <span style={{ color: '#94a3b8', fontSize: '0.85rem' }}>{formData.phoneCode} {formData.contactNumber}</span>
+                  </div>
+                  <div style={{ position: 'absolute', top: '-10px', right: '10px', background: '#fef2f2', color: '#ef4444', border: '1px solid #fca5a5', padding: '2px 8px', borderRadius: '12px', fontSize: '0.7rem', fontWeight: 'bold' }}>
+                    Feature Not Applied
+                  </div>
+                </div>
+              </div>
+
+              <div className="auth-switch" style={{ marginTop: '24px' }}>
+                <button type="button" onClick={() => setView('signup')} disabled={isSignupLoading}>← Back to Signup</button>
+              </div>
+            </div>
+          )}
+
+          {view === 'otp_mobile' && (
+            <form onSubmit={(e) => { e.preventDefault(); toast.success('Mobile verified successfully!'); onClose(); }} className="auth-form otp-form">
+              <h3 className="otp-heading">Check your Phone</h3>
+              <p className="otp-message">
+                We've sent a 6-digit SMS code to<br/>
+                <strong>{formData.phoneCode} {formData.contactNumber}</strong>
+              </p>
+              
+              <div className="otp-input-container">
+                {[0, 1, 2, 3, 4, 5].map((index) => (
+                  <input
+                    key={'mob-'+index}
+                    type="text"
+                    inputMode="numeric"
+                    maxLength={6}
+                    value={formData.otp[index] || ''}
+                    onChange={(e) => handleOtpChange(index, e.target.value)}
+                    className="otp-box"
+                  />
+                ))}
+              </div>
+
+              <button type="submit" className="auth-submit-btn" disabled={formData.otp.length !== 6}>
+                Verify Mobile OTP
+              </button>
+
+              <div className="otp-actions">
+                <p className="countdown">
+                  {countdown > 0 ? `Code expires in ${formatTime(countdown)}` : 'Code expired'}
+                </p>
+                <button type="button" onClick={handleSendMobileOTP} className="resend-btn" disabled={countdown > 0}>
+                  Resend SMS
+                </button>
+                <button type="button" onClick={() => setView('otp_selection')} className="change-email-btn">
+                  Change Method
+                </button>
               </div>
             </form>
           )}
@@ -426,3 +520,4 @@ const AuthModal = ({ isOpen, onClose }) => {
 };
 
 export default AuthModal;
+

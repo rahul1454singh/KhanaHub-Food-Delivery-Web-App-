@@ -4,10 +4,12 @@ import { supabase } from '../../api/supabase';
 import { getGlobalRealtimeChannel } from '../../api/realtimeHub';
 import { toast } from 'react-hot-toast';
 import './Orders.css';
-import { Loader2, Package, MapPin, Receipt, Clock, Calendar, KeyRound, ShieldCheck } from 'lucide-react';
+import { useCart } from '../../context/CartContext';
+import { Loader2, Package, MapPin, Receipt, Clock, Calendar, KeyRound, ShieldCheck, ShoppingCart } from 'lucide-react';
 
 const OrdersPage = ({ type = 'my-orders' }) => {
   const { user } = useAuth();
+  const { addBulkToCart, openCart } = useCart();
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const [currentPage, setCurrentPage] = useState(1);
@@ -295,6 +297,32 @@ const OrdersPage = ({ type = 'my-orders' }) => {
                       <div className="total-line grand">
                         <span>Total</span>
                         <span>₹{order.grandTotal}</span>
+                      </div>
+                      
+                      <div style={{ marginTop: '15px' }}>
+                         <button 
+                           onClick={() => {
+                             addBulkToCart(order.items);
+                             openCart();
+                           }}
+                           style={{
+                             width: '100%',
+                             padding: '10px 15px',
+                             backgroundColor: '#16a34a',
+                             color: 'white',
+                             border: 'none',
+                             borderRadius: '8px',
+                             fontWeight: 'bold',
+                             cursor: 'pointer',
+                             display: 'flex',
+                             justifyContent: 'center',
+                             alignItems: 'center',
+                             gap: '8px'
+                           }}
+                         >
+                           <ShoppingCart size={18} />
+                           Reorder Items
+                         </button>
                       </div>
                     </div>
                   </div>

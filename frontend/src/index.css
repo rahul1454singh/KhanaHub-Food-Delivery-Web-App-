@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   /* KhanaHub Unified Design System Tokens - Premium Burgundy Theme */
   --primary-brand: #2E7D32; /* Deep Burgundy */
   --primary-brand-dark: #1B5E20;
@@ -247,4 +247,24 @@ input, textarea, select {
 @keyframes ios-spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+
+/* Premium Toast Animations */
+@keyframes toastEnter {
+  0% { transform: translateY(-20px) scale(0.9); opacity: 0; }
+  100% { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+@keyframes toastExit {
+  0% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(0.9); opacity: 0; }
+}
+
+.premium-toast {
+  animation: toastEnter 0.4s var(--ease-spring) forwards;
+}
+
+.premium-toast.exit {
+  animation: toastExit 0.3s var(--ease-smooth) forwards;
 }

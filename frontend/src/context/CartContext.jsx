@@ -91,6 +91,22 @@ export const CartProvider = ({ children }) => {
     toast.success(`${item.name} added to your cart`);
   };
 
+  const addBulkToCart = (items) => {
+    setCartItems((prevItems) => {
+      const newItems = [...prevItems];
+      items.forEach(item => {
+        const existingItem = newItems.find(i => i.id === item.id);
+        if (existingItem) {
+          existingItem.quantity += (item.quantity || 1);
+        } else {
+          newItems.push({ ...item, quantity: item.quantity || 1 });
+        }
+      });
+      return newItems;
+    });
+    toast.success(`Items added to your cart`);
+  };
+
   const removeFromCart = (id) => {
     setCartItems((prevItems) => {
       const newItems = prevItems.filter((i) => i.id !== id);
@@ -128,6 +144,7 @@ export const CartProvider = ({ children }) => {
         closeCart,
         cartItems,
         addToCart,
+        addBulkToCart,
         removeFromCart,
         updateQuantity,
         clearCart,

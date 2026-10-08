@@ -15,12 +15,12 @@
     "dependencies": {
         "@supabase/supabase-js": "^2.112.4",
         "axios": "^1.19.0",
-        "firebase": "^12.18.0",
         "leaflet": "^1.9.4",
         "lucide-react": "^1.33.0",
         "react": "^19.2.8",
         "react-dom": "^19.2.8",
-        "react-hot-toast": "^2.6.0"
+        "react-hot-toast": "^2.6.0",
+        "react-router-dom": "^7.18.4"
     },
     "devDependencies": {
         "@vitejs/plugin-react": "^6.1.0",
