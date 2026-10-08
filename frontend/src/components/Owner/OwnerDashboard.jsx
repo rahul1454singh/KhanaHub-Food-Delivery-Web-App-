@@ -8,6 +8,8 @@ import OwnerOrderHistory from './OwnerOrderHistory';
 import AddMenu from './AddMenu';
 import ViewMenu from './ViewMenu';
 import Analytics from './Analytics';
+import ManagePromos from './ManagePromos';
+import { Tag } from 'lucide-react';
 import { supabase } from '../../api/supabase';
 import { toast } from 'react-hot-toast';
 
@@ -67,6 +69,8 @@ const OwnerDashboard = () => {
         return <OwnerOrderHistory />;
       case 'analytics':
         return <Analytics />;
+      case 'promos':
+        return <ManagePromos />;
       case 'add-menu':
         return <AddMenu onMenuAdded={() => setActiveTab('view-menu')} />;
       case 'view-menu':
