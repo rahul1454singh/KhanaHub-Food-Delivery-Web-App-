@@ -158,18 +158,8 @@ const AuthModal = ({ isOpen, onClose }) => {
       return;
     }
     
-    setIsSignupLoading(true);
-    try {
-      const res = await signup(formData.name, formData.email, formData.password);
-      
-      toast.success('OTP sent to your email!');
-      setView('otp');
-      setCountdown(300); // Reset timer
-    } catch (err) {
-      toast.error(err.message || 'Signup failed');
-    } finally {
-      setIsSignupLoading(false);
-    }
+    // Do not call signup() here! Go to selection screen first.
+    setView('otp_selection');
   };
 
   const handleVerifyOTP = async (e) => {
