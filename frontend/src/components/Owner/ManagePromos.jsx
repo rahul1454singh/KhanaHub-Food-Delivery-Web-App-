@@ -9,6 +9,7 @@ const ManagePromos = () => {
   const [isPromoGlobalActive, setIsPromoGlobalActive] = useState(true);
   const [newCode, setNewCode] = useState('');
   const [newDiscount, setNewDiscount] = useState('');
+  const [newDescription, setNewDescription] = useState('');
   const [loading, setLoading] = useState(true);
 
   const fetchPromosAndSettings = async () => {
@@ -49,16 +50,22 @@ const ManagePromos = () => {
         return;
     }
 
-    const { data, error } = await supabase.from('promo_codes').insert([
-      { code: newCode.toUpperCase(), discount_percentage: discountNum }
-    ]).select();
+    // Prepare insert data
+    const insertData = { code: newCode.toUpperCase(), discount_percentage: discountNum };
+    if (newDescription.trim() !== '') {
+        insertData.description = newDescription.trim();
+    }
+
+    const { data, error } = await supabase.from('promo_codes').insert([insertData]).select();
 
     if (error) {
-      toast.error('Failed to create promo. Code might already exist.');
+      toast.error('Failed to create promo. Did you run the SQL to add the description column?');
+      console.error(error);
     } else if (data) {
       toast.success('Promo code created!');
       setNewCode('');
       setNewDiscount('');
+      setNewDescription('');
       setPromos([data[0], ...promos]);
     }
   };
@@ -96,33 +103,54 @@ const ManagePromos = () => {
 
       <div style={{ background: 'white', padding: '24px', borderRadius: '12px', boxShadow: '0 2px 10px rgba(0,0,0,0.05)', marginBottom: '24px' }}>
         <h3 style={{ marginBottom: '16px' }}>Create New Promo Code</h3>
-        <form onSubmit={handleCreatePromo} style={{ display: 'flex', gap: '16px', alignItems: 'flex-end' }}>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', marginBottom: '8px', color: '#64748b' }}>Code Name</label>
-            <input 
-              type="text" 
-              value={newCode}
-              onChange={(e) => setNewCode(e.target.value)}
-              placeholder="e.g. SUMMER50"
-              style={{ width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px', textTransform: 'uppercase' }}
-              required
-            />
+        <form onSubmit={handleCreatePromo} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '8px', color: '#64748b' }}>Code Name</label>
+              <input 
+                type="text" 
+                value={newCode}
+                onChange={(e) => setNewCode(e.target.value)}
+                placeholder="e.g. SUMMER50"
+                style={{ width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px', textTransform: 'uppercase' }}
+                required
+              />
+            </div>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '8px', color: '#64748b' }}>Discount Percentage (%)</label>
+              <input 
+                type="number" 
+                value={newDiscount}
+                onChange={(e) => setNewDiscount(e.target.value)}
+                placeholder="e.g. 20"
+                min="1" max="100"
+                style={{ width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px' }}
+                required
+              />
+            </div>
           </div>
-          <div style={{ flex: 1 }}>
-            <label style={{ display: 'block', marginBottom: '8px', color: '#64748b' }}>Discount Percentage (%)</label>
-            <input 
-              type="number" 
-              value={newDiscount}
-              onChange={(e) => setNewDiscount(e.target.value)}
-              placeholder="e.g. 20"
-              min="1" max="100"
-              style={{ width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px' }}
-              required
-            />
+          <div style={{ display: 'flex', gap: '16px', alignItems: 'flex-end' }}>
+            <div style={{ flex: 1 }}>
+              <label style={{ display: 'block', marginBottom: '8px', color: '#64748b' }}>Description (Max 20 words, optional)</label>
+              <input 
+                type="text" 
+                value={newDescription}
+                onChange={(e) => {
+                  const words = e.target.value.split(/\s+/).filter(w => w.length > 0);
+                  if (words.length <= 20) {
+                    setNewDescription(e.target.value);
+                  } else {
+                    toast.error('Description cannot exceed 20 words');
+                  }
+                }}
+                placeholder="e.g. Buy 1 Burger get 2 free!"
+                style={{ width: '100%', padding: '12px', border: '1px solid #cbd5e1', borderRadius: '8px' }}
+              />
+            </div>
+            <button type="submit" style={{ padding: '12px 24px', background: 'var(--primary-brand)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', height: '43px' }}>
+              <Plus size={18} /> Create
+            </button>
           </div>
-          <button type="submit" style={{ padding: '12px 24px', background: 'var(--primary-brand)', color: 'white', border: 'none', borderRadius: '8px', fontWeight: 'bold', cursor: 'pointer', display: 'flex', alignItems: 'center', gap: '8px', height: '43px' }}>
-            <Plus size={18} /> Create
-          </button>
         </form>
       </div>
 
@@ -132,13 +160,14 @@ const ManagePromos = () => {
             <tr>
               <th style={{ padding: '16px', textAlign: 'left', color: '#475569' }}>Code</th>
               <th style={{ padding: '16px', textAlign: 'left', color: '#475569' }}>Discount</th>
+              <th style={{ padding: '16px', textAlign: 'left', color: '#475569' }}>Description</th>
               <th style={{ padding: '16px', textAlign: 'left', color: '#475569' }}>Created At</th>
               <th style={{ padding: '16px', textAlign: 'right', color: '#475569' }}>Action</th>
             </tr>
           </thead>
           <tbody>
             {promos.length === 0 ? (
-              <tr><td colSpan="4" style={{ padding: '24px', textAlign: 'center', color: '#94a3b8' }}>No promo codes found</td></tr>
+              <tr><td colSpan="5" style={{ padding: '24px', textAlign: 'center', color: '#94a3b8' }}>No promo codes found</td></tr>
             ) : (
               promos.map(promo => (
                 <tr key={promo.id} style={{ borderBottom: '1px solid #f1f5f9' }}>
@@ -148,6 +177,7 @@ const ManagePromos = () => {
                     </div>
                   </td>
                   <td style={{ padding: '16px', fontWeight: 'bold' }}>{promo.discount_percentage}% OFF</td>
+                  <td style={{ padding: '16px', color: '#64748b' }}>{promo.description || '-'}</td>
                   <td style={{ padding: '16px', color: '#64748b' }}>{new Date(promo.created_at).toLocaleDateString()}</td>
                   <td style={{ padding: '16px', textAlign: 'right' }}>
                     <button onClick={() => handleDeletePromo(promo.id)} style={{ padding: '8px', background: '#fee2e2', color: '#ef4444', border: 'none', borderRadius: '6px', cursor: 'pointer' }} title="Delete">

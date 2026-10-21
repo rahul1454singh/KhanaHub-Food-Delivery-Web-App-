@@ -4,6 +4,7 @@ import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
 import { supabase } from '../api/supabase';
+import { formatPrice } from '../utils/currency';
 import './CartSidebar.css';
 
 const CartSidebar = ({ onCheckout }) => {
@@ -106,7 +107,7 @@ const CartSidebar = ({ onCheckout }) => {
                 <img src={item.image} alt={item.name} className="cart-item-image" />
                 <div className="cart-item-details">
                   <h4 className="cart-item-title">{item.name}</h4>
-                  <span className="cart-item-price">â‚¹{item.price}</span>
+                  <span className="cart-item-price">{formatPrice(item.price)}</span>
                   
                   <div className="cart-item-actions">
                     <div className="quantity-controls">
@@ -135,16 +136,16 @@ const CartSidebar = ({ onCheckout }) => {
             {discountPercent > 0 && (
               <div className="cart-discount" style={{ display: 'flex', justifyContent: 'space-between', color: 'var(--primary-brand)', fontWeight: 'bold', marginBottom: '8px', fontSize: '1.1rem' }}>
                 <span>Discount:</span>
-                <span>-₹{discountAmount}</span>
+                <span>-{formatPrice(discountAmount)}</span>
               </div>
             )}
             <div className="cart-total">
               <span>Total:</span>
-              <span>â‚¹{Math.max(0, cartTotal - discountAmount)}</span>
+              <span>{formatPrice(Math.max(0, cartTotal - discountAmount))}</span>
             </div>
             <button className="btn-primary checkout-btn" onClick={handleCheckout}>
               <span>Proceed to Order</span>
-              <span className="checkout-btn-arrow">â†’</span>
+              <span className="checkout-btn-arrow">→</span>
             </button>
           </div>
         )}

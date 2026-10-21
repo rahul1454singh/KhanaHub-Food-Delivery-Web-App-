@@ -116,6 +116,15 @@ const OwnerDashboard = () => {
           </button>
 
           <button 
+            className={`owner-nav-btn ${activeTab === 'promos' ? 'active' : ''}`}
+            onClick={() => setActiveTab('promos')}
+          >
+            <Tag size={20} />
+            <span>Manage Promos</span>
+          </button>
+
+
+          <button 
             className={`owner-nav-btn ${activeTab === 'add-menu' ? 'active' : ''}`}
             onClick={() => setActiveTab('add-menu')}
           >

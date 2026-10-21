@@ -91,17 +91,20 @@ export const AuthProvider = ({ children }) => {
     // Standard Customer / Delivery / Owner Supabase Auth
     const { data, error } = await supabase.auth.signInWithPassword({ email, password });
     if (error) throw error;
+    if (data?.user) {
+      await fetchUserData(data.user);
+    }
     return { message: 'Login successful' };
   };
 
-  const signup = async (name, email, password) => {
+  const signup = async (name, email, password, phoneCode, contactNumber) => {
     // Standard signup via Supabase Auth for ALL users
     // The Supabase Database Trigger (handle_new_user) will auto-assign the 'delivery' role if email starts with 'db'
     const { data, error } = await supabase.auth.signUp({
       email,
       password,
       options: {
-        data: { name }
+        data: { name, phone_code: phoneCode, contact_number: contactNumber }
       }
     });
 
@@ -112,6 +115,9 @@ export const AuthProvider = ({ children }) => {
   const verifyOTP = async (email, otp) => {
     const { data, error } = await supabase.auth.verifyOtp({ email, token: otp, type: 'signup' });
     if (error) throw error;
+    if (data?.user) {
+      await fetchUserData(data.user);
+    }
     return { message: 'Verified successfully' };
   };
 
@@ -134,10 +140,38 @@ export const AuthProvider = ({ children }) => {
     if (error) throw error;
   };
 
+  const resetPassword = async (email) => {
+    const { data, error } = await supabase.auth.resetPasswordForEmail(email.trim().toLowerCase());
+    if (error) throw error;
+    return data;
+  };
+
+  const verifyRecoveryOTP = async (email, otp) => {
+    const { data, error } = await supabase.auth.verifyOtp({
+      email: email.trim().toLowerCase(),
+      token: otp.trim(),
+      type: 'recovery'
+    });
+    if (error) throw error;
+    return data;
+  };
+
+  const updatePassword = async (newPassword) => {
+    const { data, error } = await supabase.auth.updateUser({
+      password: newPassword
+    });
+    if (error) throw error;
+    return data;
+  };
+
   const logout = async () => {
     if (user) {
-      localStorage.removeItem(`cart_${user.id}`);
+      const uid = user.id || user._id;
+      if (uid) {
+        localStorage.removeItem(`cart_${uid}`);
+      }
     }
+    localStorage.removeItem('cart_undefined');
     localStorage.removeItem('cart_guest');
     localStorage.removeItem('khanahub_delivery_user');
     await supabase.auth.signOut();
@@ -146,7 +180,7 @@ export const AuthProvider = ({ children }) => {
 
   return (
     <AuthContext.Provider value={{ 
-      user, token: null, loading, login, signup, verifyOTP, resendOTP, googleAuth, logout, 
+      user, token: null, loading, login, signup, verifyOTP, resendOTP, googleAuth, logout, resetPassword, verifyRecoveryOTP, updatePassword, 
       showAuthModal, setShowAuthModal,
       authPromptMessage, setAuthPromptMessage,
       globalLoading, setGlobalLoading 

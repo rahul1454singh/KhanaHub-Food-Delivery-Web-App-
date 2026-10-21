@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { ShoppingCart } from 'lucide-react';
 import { menuData } from '../data/menuData'; // Fallback when Supabase table is empty
 import { supabase } from '../api/supabase';
+import { formatPrice } from '../utils/currency';
 import './MenuSection.css';
 
 import { useCart } from '../context/CartContext';
@@ -49,7 +50,7 @@ const MenuCard = ({ item }) => {
       <div className="card-content">
         <div className="card-header">
           <h3 className="card-title">{item.name}</h3>
-          <span className="card-price">₹{item.price}</span>
+          <span className="card-price">{formatPrice(item.price)}</span>
         </div>
         {item.description && <p className="card-description">{item.description}</p>}
         <button 

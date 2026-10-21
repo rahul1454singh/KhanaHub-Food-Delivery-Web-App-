@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { formatPrice } from '../../utils/currency';
 import { supabase } from '../../api/supabase';
 import { toast } from 'react-hot-toast';
 import { Trash2, Edit2, Search, Plus, Minus, X } from 'lucide-react';
@@ -251,7 +252,7 @@ const ViewMenu = () => {
                 <h3>{item.name}</h3>
                 <span className="section-badge">{item.section}</span>
               </div>
-              <p className="admin-card-price">₹{item.price}</p>
+              <p className="admin-card-price">{formatPrice(item.price)}</p>
               {item.description && <p className="admin-card-desc">{item.description}</p>}
               
               <div className="admin-card-controls">

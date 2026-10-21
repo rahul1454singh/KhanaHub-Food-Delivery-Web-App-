@@ -3,7 +3,7 @@ import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import './LocationPickerMap.css';
 
-const LocationPickerMap = ({ lat, lon, onLocationChange }) => {
+const LocationPickerMap = ({ lat, lon, onLocationChange, pinLabel = 'Delivery Pin' }) => {
   const mapContainerRef = useRef(null);
   const mapInstanceRef = useRef(null);
   const markerRef = useRef(null);
@@ -73,7 +73,7 @@ const LocationPickerMap = ({ lat, lon, onLocationChange }) => {
         draggable: true
       }).addTo(map);
 
-      marker.bindPopup('<b>Delivery Pin</b><br/>Drag pin or click map to move').openPopup();
+      marker.bindPopup(`<b>${pinLabel}</b><br/>Drag pin or click map to move`).openPopup();
 
       // On Marker Drag End
       marker.on('dragend', (e) => {

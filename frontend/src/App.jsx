@@ -6,6 +6,7 @@ import { RestaurantInfo, CallToAction } from './components/InfoSection';
 import Footer from './components/Footer';
 import CartSidebar from './components/CartSidebar';
 import AuthModal from './components/AuthModal';
+import ForgotPassword from './components/ForgotPassword';
 import CheckoutPage from './components/Checkout/CheckoutPage';
 import OrdersPage from './components/Orders/OrdersPage';
 import PaymentSuccess from './components/PaymentSuccess/PaymentSuccess';
@@ -23,6 +24,7 @@ import './index.css';
 
 const getInitialView = () => {
   const path = window.location.pathname;
+  if (path === '/forgot-password' || path === '/recovery') return 'forgot-password';
   if (path === '/menu') return 'menu';
   if (path === '/cart') return 'cart';
   if (path === '/') return 'home';
@@ -52,6 +54,7 @@ function App() {
   // Sync internal view state to URL
   useEffect(() => {
     let path = '/';
+    if (view === 'forgot-password') path = '/forgot-password';
     if (view === 'checkout') path = '/checkout';
     if (view === 'payment') path = '/payment';
     if (view === 'my-orders') path = '/orders';
@@ -224,7 +227,14 @@ function App() {
       {showLoadingOverlay && <LoadingScreen message={loadingMessage} />}
       <Navbar view={view} onViewChange={handleViewChange} />
       <CartSidebar onCheckout={handleCheckoutClick} />
-      <AuthModal isOpen={showAuthModal} onClose={() => setShowAuthModal(false)} />
+      <AuthModal 
+        isOpen={showAuthModal} 
+        onClose={() => setShowAuthModal(false)} 
+        onForgotPassword={() => {
+          setShowAuthModal(false);
+          handleViewChange('forgot-password');
+        }}
+      />
             <Toaster 
         position="top-right"
         containerStyle={{
@@ -336,6 +346,15 @@ function App() {
         {view === 'live-delivery' && <LiveDeliveryPage onViewChange={handleViewChange} />}
         {view === 'owner-dashboard' && <OwnerDashboard />}
         {view === 'delivery-dashboard' && <DeliveryDashboard />}
+        {view === 'forgot-password' && (
+          <ForgotPassword 
+            onBackToLogin={() => {
+              handleViewChange('home');
+              setShowAuthModal(true);
+            }}
+            onViewChange={handleViewChange}
+          />
+        )}
         {view === 'not-found' && (
           <div style={{ padding: '100px 20px', textAlign: 'center', minHeight: '60vh' }}>
             <h1 style={{ fontSize: '3rem', color: '#1e293b', marginBottom: '20px' }}>404</h1>
@@ -350,7 +369,7 @@ function App() {
           </div>
         )}
       </main>
-        {!(view === 'my-orders' || view === 'order-history' || view === 'owner-dashboard' || view === 'delivery-dashboard' || view === 'menu') && <Footer />}
+        {!(view === 'my-orders' || view === 'order-history' || view === 'owner-dashboard' || view === 'delivery-dashboard' || view === 'menu' || view === 'forgot-password') && <Footer />}
     </div>
   );
 }

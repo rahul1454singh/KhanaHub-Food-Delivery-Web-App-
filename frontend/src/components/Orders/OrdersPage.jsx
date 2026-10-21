@@ -3,6 +3,7 @@ import { useAuth } from '../../context/AuthContext';
 import { supabase } from '../../api/supabase';
 import { getGlobalRealtimeChannel } from '../../api/realtimeHub';
 import { toast } from 'react-hot-toast';
+import { formatPrice } from '../../utils/currency';
 import './Orders.css';
 import { useCart } from '../../context/CartContext';
 import { Loader2, Package, MapPin, Receipt, Clock, Calendar, KeyRound, ShieldCheck, ShoppingCart } from 'lucide-react';
@@ -270,7 +271,7 @@ const OrdersPage = ({ type = 'my-orders' }) => {
                           <span className="item-qty-badge">{item.quantity}x</span>
                           <span className="item-name-premium">{item.name}</span>
                         </div>
-                        <span className="item-price-premium">₹{item.price * item.quantity}</span>
+                        <span className="item-price-premium">{formatPrice(item.price * item.quantity)}</span>
                       </div>
                     ))}
                   </div>
@@ -288,15 +289,15 @@ const OrdersPage = ({ type = 'my-orders' }) => {
                     <div className="totals-premium">
                       <div className="total-line">
                         <span>Subtotal</span>
-                        <span>₹{order.totalAmount}</span>
+                        <span>{formatPrice(order.totalAmount)}</span>
                       </div>
                       <div className="total-line">
                         <span>Delivery Fee</span>
-                        <span>₹{order.deliveryCharge}</span>
+                        <span>{formatPrice(order.deliveryCharge)}</span>
                       </div>
                       <div className="total-line grand">
                         <span>Total</span>
-                        <span>₹{order.grandTotal}</span>
+                        <span>{formatPrice(order.grandTotal)}</span>
                       </div>
                       
                       <div style={{ marginTop: '15px' }}>

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { supabase } from '../../api/supabase';
+import { formatCurrency } from '../../utils/currency';
 import { toast } from 'react-hot-toast';
 import { 
   Search, 

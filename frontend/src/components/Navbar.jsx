@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, Menu, User, LogOut, X, Home, UtensilsCrossed, Info, Package, History, Truck } from 'lucide-react';
+import { ShoppingCart, Menu, User, LogOut, X, Home, UtensilsCrossed, Info, Package, History, Truck, Tag } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 import { supabase } from '../api/supabase';
@@ -17,6 +17,7 @@ const Navbar = ({ view, onViewChange }) => {
   const [isLoggingOut, setIsLoggingOut] = useState(false);
   const [hasActiveDelivery, setHasActiveDelivery] = useState(false);
   const [pendingOwnerOrdersCount, setPendingOwnerOrdersCount] = useState(0);
+  const [activePromosCount, setActivePromosCount] = useState(0);
 
   // Handle body scroll locking for mobile drawer and logout modal
   useEffect(() => {
@@ -134,6 +135,29 @@ const Navbar = ({ view, onViewChange }) => {
     return () => {
       supabase.removeChannel(channel);
     };
+  }, [user]);
+
+  // Check active promo codes count (for customers/guests)
+  useEffect(() => {
+    if (user && (user.role === 'owner' || user.role === 'delivery' || user.email?.startsWith('db'))) {
+      setActivePromosCount(0);
+      return;
+    }
+
+    const checkPromos = async () => {
+      try {
+        const { data: settings } = await supabase.from('store_settings').select('is_promo_active').single();
+        if (settings?.is_promo_active) {
+          const { count } = await supabase.from('promo_codes').select('*', { count: 'exact', head: true });
+          if (count !== null) setActivePromosCount(count);
+        } else {
+          setActivePromosCount(0);
+        }
+      } catch (e) {
+        console.error('Error fetching promos:', e);
+      }
+    };
+    checkPromos();
   }, [user]);
 
   const getDisplayName = (u) => {
@@ -259,7 +283,7 @@ const Navbar = ({ view, onViewChange }) => {
   return (
     <>
       <nav className="navbar">
-        <div className="container navbar-container">
+        <div className="navbar-container">
           <div className="navbar-left">
             <button className="mobile-menu-btn" onClick={() => setIsMobileMenuOpen(true)} aria-label="Open menu">
               <Menu size={26} />
@@ -298,6 +322,29 @@ const Navbar = ({ view, onViewChange }) => {
               >
                 Our Menu
               </button>
+              {activePromosCount > 1 && (!user || (user.role !== 'owner' && user.role !== 'delivery' && !user.email?.startsWith('db'))) && (
+                <button 
+                  className="nav-link-btn" 
+                  onClick={() => handleNavigate('menu')}
+                  style={{ position: 'relative', color: 'var(--accent-orange)' }}
+                >
+                  <Tag size={16} style={{ marginRight: '6px' }} /> Offers
+                  <span style={{
+                    position: 'absolute',
+                    top: '-6px',
+                    right: '-10px',
+                    background: 'var(--accent-orange)',
+                    color: 'white',
+                    fontSize: '0.65rem',
+                    fontWeight: '800',
+                    padding: '2px 6px',
+                    borderRadius: '10px',
+                    boxShadow: '0 2px 4px rgba(0,0,0,0.1)'
+                  }}>
+                    {activePromosCount}
+                  </span>
+                </button>
+              )}
               {!user && (
                 <button 
                   className={`nav-link-btn ${view === 'home' && activeSection === 'about' ? 'active' : ''}`} 
@@ -455,6 +502,28 @@ const Navbar = ({ view, onViewChange }) => {
             <UtensilsCrossed size={20} />
             <span>Our Menu</span>
           </button>
+
+          {activePromosCount > 1 && (!user || (user.role !== 'owner' && user.role !== 'delivery' && !user.email?.startsWith('db'))) && (
+            <button 
+              className="mobile-nav-item"
+              onClick={() => handleNavigate('menu')}
+              style={{ color: 'var(--accent-orange)' }}
+            >
+              <Tag size={20} />
+              <span>Offers</span>
+              <span style={{
+                marginLeft: 'auto',
+                background: 'var(--accent-orange)',
+                color: 'white',
+                fontSize: '0.75rem',
+                fontWeight: '800',
+                padding: '2px 8px',
+                borderRadius: '10px',
+              }}>
+                {activePromosCount}
+              </span>
+            </button>
+          )}
 
           {!user && (
             <button 

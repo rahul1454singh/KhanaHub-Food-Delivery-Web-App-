@@ -13,6 +13,7 @@ import {
   Receipt,
   Sparkles
 } from 'lucide-react';
+import { formatPrice } from '../../utils/currency';
 import './PaymentSuccess.css';
 
 const PaymentSuccess = ({ order, onViewChange }) => {
@@ -167,8 +168,8 @@ const PaymentSuccess = ({ order, onViewChange }) => {
                       <span className="item-title">{item.name}</span>
                     </td>
                     <td className="td-qty">{item.quantity}</td>
-                    <td className="td-rate">₹{item.price}</td>
-                    <td className="td-total">₹{item.price * item.quantity}</td>
+                    <td className="td-rate">{formatPrice(item.price)}</td>
+                    <td className="td-total">{formatPrice(item.price * item.quantity)}</td>
                   </tr>
                 ))}
               </tbody>
@@ -187,7 +188,7 @@ const PaymentSuccess = ({ order, onViewChange }) => {
             <div className="summary-col-totals">
               <div className="totals-line">
                 <span>Subtotal</span>
-                <span>₹{subtotal}</span>
+                <span>{formatPrice(subtotal)}</span>
               </div>
               <div className="totals-line">
                 <span>Delivery Charge</span>
@@ -195,7 +196,7 @@ const PaymentSuccess = ({ order, onViewChange }) => {
               </div>
               <div className="totals-line total-highlight">
                 <span>Grand Total Paid</span>
-                <span>₹{grandTotal}</span>
+                <span>{formatPrice(grandTotal)}</span>
               </div>
             </div>
           </div>

@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from 'react';
 import L from 'leaflet';
 import 'leaflet/dist/leaflet.css';
+import { supabase } from '../../api/supabase';
 import { Eye, Crosshair, X, Navigation } from 'lucide-react';
 import './LiveTrackingMap.css';
 
@@ -41,7 +42,32 @@ const LiveTrackingMap = ({
   const routeGroupRef = useRef(null);
   const markersRef = useRef({});
 
-  const [routeStats, setRouteStats] = useState({ distance: '1.6 km', eta: '5 mins' });
+  const [routeStats, setRouteStats] = useState({ distance: '...', eta: '...' });
+  const [dynamicRestaurant, setDynamicRestaurant] = useState(null);
+
+  useEffect(() => {
+    const fetchOwnerLocation = async () => {
+      try {
+        const { data, error } = await supabase
+          .from('users')
+          .select('latitude, longitude, address')
+          .eq('role', 'owner')
+          .limit(1)
+          .single();
+        
+        if (data && data.latitude && data.longitude) {
+          setDynamicRestaurant({
+            lat: data.latitude,
+            lng: data.longitude,
+            name: 'KhanaHub Restaurant'
+          });
+        }
+      } catch (err) {
+        console.error('Failed to fetch owner location:', err);
+      }
+    };
+    fetchOwnerLocation();
+  }, []);
   const [showStreetView, setShowStreetView] = useState(false);
 
   // Target Customer Destination
@@ -49,8 +75,8 @@ const LiveTrackingMap = ({
   const destLng = customerLocation?.lng || DEFAULT_CUSTOMER_DESTINATION.lng;
 
   // Local Restaurant Anchor
-  let pickLat = pickupLocation?.lat || DEFAULT_RESTAURANT.lat;
-  let pickLng = pickupLocation?.lng || DEFAULT_RESTAURANT.lng;
+  let pickLat = pickupLocation?.lat || dynamicRestaurant?.lat || DEFAULT_RESTAURANT.lat;
+  let pickLng = pickupLocation?.lng || dynamicRestaurant?.lng || DEFAULT_RESTAURANT.lng;
 
   if (calculateDistanceKm(pickLat, pickLng, destLat, destLng) > 15) {
     pickLat = destLat - 0.012;

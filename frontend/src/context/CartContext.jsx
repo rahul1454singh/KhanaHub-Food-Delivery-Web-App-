@@ -38,6 +38,12 @@ export const CartProvider = ({ children }) => {
   const [prevUser, setPrevUser] = useState(user);
   const isInitialMount = React.useRef(true);
 
+  const getCartKey = (u) => {
+    if (!u) return 'cart_guest';
+    const id = u.id || u._id;
+    return id ? ('cart_' + id) : 'cart_guest';
+  };
+
   useEffect(() => {
     if (isInitialMount.current) {
       isInitialMount.current = false;

@@ -3,6 +3,7 @@ import { useCart } from '../../context/CartContext';
 import { useAuth } from '../../context/AuthContext';
 import { ArrowLeft, MapPin, Navigation, ShieldCheck, CreditCard, Loader2 } from 'lucide-react';
 import LocationPickerMap from './LocationPickerMap';
+import { formatPrice } from '../../utils/currency';
 import './Checkout.css';
 import { toast } from 'react-hot-toast';
 import { supabase } from '../../api/supabase';
@@ -183,7 +184,7 @@ const CheckoutPage = ({ onBack, onPaymentSuccess, onViewChange }) => {
         }
       } else {
         // In production, an absolute HTTPS URL is perfectly safe
-        finalLogoImage = window.location.origin + 'https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1788190253/newlogo_sterro.png';
+        finalLogoImage = 'https://res.cloudinary.com/n3wagpa9/image/upload/f_auto,q_auto/v1788190253/newlogo_sterro.png';
       }
 
       // 3. Initialize official Razorpay Checkout
@@ -233,7 +234,7 @@ const CheckoutPage = ({ onBack, onPaymentSuccess, onViewChange }) => {
                 order: verifyData.order
               });
 
-              toast.success(`Payment of ₹${grandTotal.toFixed(2)} has been successfully done!`, { duration: 3000 });
+              toast.success(`Payment of ${formatPrice(grandTotal)} has been successfully done!`, { duration: 3000 });
               if (onPaymentSuccess) {
                 onPaymentSuccess(verifyData.order);
               }
@@ -374,7 +375,7 @@ const CheckoutPage = ({ onBack, onPaymentSuccess, onViewChange }) => {
             <button type="submit" className="submit-checkout-btn" disabled={cartItems.length === 0 || isProcessingPayment}>
               <span className="btn-pay-content">
                 {isProcessingPayment ? <Loader2 size={18} className="spinner-inline" /> : <CreditCard size={18} />} 
-                {isProcessingPayment ? 'Initializing...' : `Proceed to Pay ₹${grandTotal}`}
+                {isProcessingPayment ? 'Initializing...' : `Proceed to Pay ${formatPrice(grandTotal)}`}
               </span>
             </button>
 
@@ -402,7 +403,7 @@ const CheckoutPage = ({ onBack, onPaymentSuccess, onViewChange }) => {
                       <button type="button" onClick={() => updateQuantity(item.id, 1)}>+</button>
                     </div>
                   </div>
-                  <span className="summary-item-price">₹{item.price * item.quantity}</span>
+                  <span className="summary-item-price">{formatPrice(item.price * item.quantity)}</span>
                 </div>
               ))
             )}
@@ -411,15 +412,15 @@ const CheckoutPage = ({ onBack, onPaymentSuccess, onViewChange }) => {
           <div className="summary-totals">
             <div className="summary-row">
               <span>Subtotal</span>
-              <span>₹{cartTotal}</span>
+              <span>{formatPrice(cartTotal)}</span>
             </div>
             <div className="summary-row">
               <span>Delivery Charge</span>
-              <span>₹{deliveryCharge}</span>
+              <span>{formatPrice(deliveryCharge)}</span>
             </div>
             <div className="summary-row grand-total">
               <span>Grand Total</span>
-              <span>₹{grandTotal}</span>
+              <span>{formatPrice(grandTotal)}</span>
             </div>
           </div>
         </div>

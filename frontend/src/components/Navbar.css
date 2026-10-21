@@ -11,6 +11,9 @@
 }
 
 .navbar-container {
+  width: 100%;
+  padding: 0 40px;
+  position: relative;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -63,7 +66,9 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-grow: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .navbar-links {

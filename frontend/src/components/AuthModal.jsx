@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { X, Eye, EyeOff, LogIn, UserPlus, ShieldCheck } from 'lucide-react';
+import { X, Eye, EyeOff, LogIn, UserPlus, ShieldCheck, LockKeyhole } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 import { toast } from 'react-hot-toast';
 import IOSSpinner from './IOSSpinner';
 import './AuthModal.css';
 
-const AuthModal = ({ isOpen, onClose }) => {
+const AuthModal = ({ isOpen, onClose, onForgotPassword }) => {
   const { login, signup, verifyOTP, resendOTP, googleAuth, authPromptMessage, setAuthPromptMessage } = useAuth();
   const [view, setView] = useState('login'); // login, signup, otp
   const [isEmailLoading, setIsEmailLoading] = useState(false);
@@ -126,6 +126,20 @@ const AuthModal = ({ isOpen, onClose }) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+    const handleSendEmailOTP = async () => {
+    setIsSignupLoading(true);
+    try {
+      await signup(formData.name, formData.email, formData.password, formData.phoneCode, formData.contactNumber);
+      toast.success('OTP sent to your email!');
+      setView('otp');
+      setCountdown(300);
+    } catch (err) {
+      toast.error(err.message || 'Signup failed');
+    } finally {
+      setIsSignupLoading(false);
+    }
+  };
+
   const handleLogin = async (e) => {
     e.preventDefault();
     setIsEmailLoading(true);
@@ -239,7 +253,7 @@ const AuthModal = ({ isOpen, onClose }) => {
 
         {view === 'login' && authPromptMessage && (
           <div className="auth-prompt-banner">
-            <span className="auth-prompt-icon">ðŸ”’</span>
+            <LockKeyhole size={18} className="auth-prompt-icon" style={{ flexShrink: 0 }} />
             <span className="auth-prompt-text">{authPromptMessage}</span>
           </div>
         )}
@@ -252,7 +266,33 @@ const AuthModal = ({ isOpen, onClose }) => {
                 <input type="email" name="email" value={formData.email} onChange={handleChange} required placeholder="Enter your email" />
               </div>
               <div className="auth-input-group">
-                <label>Password</label>
+                <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                  <label>Password</label>
+                  <button 
+                    type="button" 
+                    className="forgot-password-link"
+                    onClick={() => {
+                      onClose();
+                      if (onForgotPassword) {
+                        onForgotPassword();
+                      } else {
+                        window.history.pushState(null, '', '/forgot-password');
+                        window.dispatchEvent(new PopStateEvent('popstate'));
+                      }
+                    }}
+                    style={{
+                      background: 'none',
+                      border: 'none',
+                      color: 'var(--primary-brand, #fc8019)',
+                      fontSize: '0.82rem',
+                      fontWeight: '600',
+                      cursor: 'pointer',
+                      padding: 0
+                    }}
+                  >
+                    Forgot Password?
+                  </button>
+                </div>
                 <div className="password-input-wrapper">
                   <input 
                     type={showPassword ? "text" : "password"} 
@@ -293,10 +333,10 @@ const AuthModal = ({ isOpen, onClose }) => {
                 <label>Contact Number</label>
                 <div className="phone-input">
                   <select name="phoneCode" value={formData.phoneCode} onChange={handleChange} className="phone-code" disabled={isAnyLoading}>
-                    <option value="+977">ðŸ‡³ðŸ‡µ +977</option>
-                    <option value="+91">ðŸ‡®ðŸ‡³ +91</option>
-                    <option value="+1">ðŸ‡ºðŸ‡¸ +1</option>
-                    <option value="+44">ðŸ‡¬ðŸ‡§ +44</option>
+                    <option value="+977">🇳🇵 +977</option>
+                    <option value="+91">🇮🇳 +91</option>
+                    <option value="+1">🇺🇸 +1</option>
+                    <option value="+44">🇬🇧 +44</option>
                   </select>
                   <input type="tel" name="contactNumber" value={formData.contactNumber} onChange={handleChange} required placeholder="98XXXXXXXX" disabled={isAnyLoading} />
                 </div>

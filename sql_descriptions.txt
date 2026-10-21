@@ -1,0 +1,15 @@
+### 1. Promo Codes & Store Settings Setup
+**Description:** Creates the `promo_codes` and `store_settings` tables for your custom discount system.
+**Usage:** Run this once to enable promo codes.
+
+### 2. Error Logging & Safe Signup Trigger
+**Description:** Creates a `debug_logs` table and updates `handle_new_user` so that if anything fails during signup, it logs the error instead of crashing the app.
+**Usage:** Run this to ensure stable signups.
+
+### 3. Profile & Order Security Rules (RLS)
+**Description:** Resets and reapplies Row Level Security (RLS) on `users` and `orders` so users can only see their own data.
+**Usage:** Run this to secure user data.
+
+### 4. Core Database Schema (Users & Menu)
+**Description:** The original setup script for user roles (`customer`, `owner`, `delivery`), the `users` table, and the `menu` table.
+**Usage:** You already ran this when you started the project.

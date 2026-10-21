@@ -23,6 +23,7 @@ import LiveTrackingMap from './LiveTrackingMap';
 import DeliveryOtpModal from './DeliveryOtpModal';
 import DeliverySuccessModal from './DeliverySuccessModal';
 import IOSSpinner from '../IOSSpinner';
+import { formatPrice } from '../../utils/currency';
 import './DeliveryDashboard.css';
 
 const DeliveryDashboard = () => {
@@ -199,7 +200,7 @@ const DeliveryDashboard = () => {
         payload: { orderId: order.id, status: 'out_for_delivery' }
       });
 
-      toast.success('Order is now Out for Delivery! Live tracking is active.');
+      toast.success('Location shared! Live tracking is active.');
       fetchAssignedOrders();
     } catch (err) {
       toast.error('Failed to update status');
@@ -453,7 +454,7 @@ const DeliveryDashboard = () => {
                             <Receipt size={18} className="detail-icon" />
                             <div className="detail-text">
                               <h4>Bill Total</h4>
-                              <p>₹{order.grand_total || order.total_amount || 0} ({order.payment_status?.toUpperCase() || 'PAID'})</p>
+                              <p>{formatPrice(order.grand_total || order.total_amount || 0)} ({order.payment_status?.toUpperCase() || 'PAID'})</p>
                             </div>
                           </div>
                         </div>
@@ -468,7 +469,7 @@ const DeliveryDashboard = () => {
                                   <span className="item-qty-tag">{item.quantity}x</span>
                                   <strong>{item.name}</strong> {item.variant ? `(${item.variant})` : ''}
                                 </span>
-                                <span style={{ fontWeight: '600' }}>₹{(item.price || 0) * item.quantity}</span>
+                                <span style={{ fontWeight: '600' }}>{formatPrice((item.price || 0) * item.quantity)}</span>
                               </li>
                             ))}
                           </ul>
@@ -488,7 +489,7 @@ const DeliveryDashboard = () => {
                                 </>
                               ) : (
                                 <>
-                                  <Navigation size={18} /> Out for Delivery
+                                  <Navigation size={18} /> Share Location & Start
                                 </>
                               )}
                             </button>
@@ -535,7 +536,7 @@ const DeliveryDashboard = () => {
                     <span className="request-label" style={{ color: '#16a34a' }}>Completed Delivery</span>
                     <span className="request-order-id">Order #{order.id.substring(0, 8).toUpperCase()}</span>
                     <span className="request-time">
-                      Delivered to {order.delivery_details?.name || 'Customer'} • ₹{order.grand_total || order.total_amount}
+                      Delivered to {order.delivery_details?.name || 'Customer'} • {formatPrice(order.grand_total || order.total_amount)}
                     </span>
                   </div>
                   <div style={{ display: 'flex', alignItems: 'center', gap: '6px', color: '#16a34a', fontWeight: '700' }}>

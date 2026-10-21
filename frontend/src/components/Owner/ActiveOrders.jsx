@@ -4,6 +4,7 @@ import { getGlobalRealtimeChannel, broadcastOrderUpdate } from '../../api/realti
 import { toast } from 'react-hot-toast';
 import { Clock, MapPin, Phone, User, CheckCircle, ChefHat, Package, Check, Search, X, Eye, Truck, Navigation } from 'lucide-react';
 import LiveTrackingMap from '../Delivery/LiveTrackingMap';
+import { formatCurrency } from '../../utils/currency';
 import './ActiveOrders.css';
 
 const ActiveOrders = ({ setPendingCount, onAssign }) => {

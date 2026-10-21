@@ -16,6 +16,7 @@ import {
 } from 'lucide-react';
 import LiveTrackingMap from '../Delivery/LiveTrackingMap';
 import IOSSpinner from '../IOSSpinner';
+import { formatPrice } from '../../utils/currency';
 import './LiveDeliveryPage.css';
 
 const LiveDeliveryPage = ({ onViewChange }) => {
@@ -277,14 +278,14 @@ const LiveDeliveryPage = ({ onViewChange }) => {
                     <span>
                       <strong>{item.quantity}x</strong> {item.name} {item.variant ? `(${item.variant})` : ''}
                     </span>
-                    <span style={{ fontWeight: '600' }}>₹{(item.price || 0) * item.quantity}</span>
+                    <span style={{ fontWeight: '600' }}>{formatPrice((item.price || 0) * item.quantity)}</span>
                   </li>
                 ))}
               </ul>
 
               <div className="live-bill-totals">
                 <span>Total Paid</span>
-                <span>₹{activeOrder.grand_total || activeOrder.total_amount}</span>
+                <span>{formatPrice(activeOrder.grand_total || activeOrder.total_amount)}</span>
               </div>
             </div>
           </div>

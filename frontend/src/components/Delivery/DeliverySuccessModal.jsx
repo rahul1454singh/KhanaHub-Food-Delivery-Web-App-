@@ -1,5 +1,6 @@
 import React from 'react';
 import { CheckCircle2, Package, MapPin } from 'lucide-react';
+import { formatPrice } from '../../utils/currency';
 import './DeliverySuccessModal.css';
 
 const DeliverySuccessModal = ({ order, isOpen, onClose }) => {
@@ -32,7 +33,7 @@ const DeliverySuccessModal = ({ order, isOpen, onClose }) => {
           </div>
           <div className="success-detail-row">
             <span>Total Collected</span>
-            <span>₹{order.grand_total || order.total_amount || 0}</span>
+            <span>{formatPrice(order.grand_total || order.total_amount || 0)}</span>
           </div>
         </div>
 
