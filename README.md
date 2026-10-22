@@ -1,4 +1,4 @@
-# KhanaHub 🍔
+# KhanaHub 
 
 KhanaHub is a premium, full-stack food delivery web application designed to bring delicious food straight to your doorstep. I built this project to learn and implement modern web development practices, focusing heavily on a clean, Swiggy/Zomato-inspired user interface and real-time data handling.
 
@@ -47,7 +47,4 @@ If you want to run this project locally, follow these steps:
    ```
 
 ## 🤝 Contributing
-Since this is a personal project, it's currently not actively seeking major contributions. However, feel free to fork the repo, play around with the code, and submit any cool pull requests if you'd like!
-
----
-*Built with ❤️ and a lot of coffee.*
+Since this is a personal project, it's currently not actively seeking major contributions. 
