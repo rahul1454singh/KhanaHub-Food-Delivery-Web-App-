@@ -16,3 +16,6 @@ serviceAccountKey.json
 /*.js
 frontend/fix_auth.cjs
 
+# Documentation PDF (Local only, not pushed to GitHub)
+*.pdf
+
